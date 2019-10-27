@@ -53,17 +53,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>boyzrgro.ttf</string>
-		<string>BoyzRGross.ttf</string>
-		<string>AdventPro-Bold.ttf</string>
-		<string>AdventPro-ExtraLight.ttf</string>
-		<string>AdventPro-Light.ttf</string>
-		<string>AdventPro-Medium.ttf</string>
-		<string>AdventPro-Regular.ttf</string>
-		<string>AdventPro-SemiBold.ttf</string>
-		<string>AdventPro-Thin.ttf</string>
-	</array>
 </dict>
 </plist>
