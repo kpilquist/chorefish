@@ -25,7 +25,7 @@ class HomeScreen extends React.Component {
             <Text style={styles.touchableText}>Log In</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.tbutton}>
+        <View style={styles.bButton}>
           <TouchableOpacity
             title="Sign Up"
             style={styles.touchableButton}
@@ -60,6 +60,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tbutton: {
+    width: '80%',
+  },
+  bButton: {
     paddingTop: 25,
     width: '80%',
   },
@@ -71,8 +74,8 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   mainImg: {
-    width: 400,
-    height: 400,
+    width: 375,
+    height: 375,
   },
 
   touchableButton: {
