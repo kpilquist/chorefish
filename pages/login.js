@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import './global';
 import {
   ScrollView,
   StyleSheet,
@@ -31,7 +32,7 @@ export class LoginScreen extends Component {
   login = (email, password) => {
     axios
       .post(
-        'http://192.168.1.8:8000/api/auth/login',
+        global.url + '/api/auth/login',
         {email, password},
         {
           headers: {
@@ -43,6 +44,7 @@ export class LoginScreen extends Component {
       .then(response => {
         if (response.data.hasOwnProperty('access_token')) {
           this.saveToken(response.data.access_token).then(
+            (global.bearer = response.data.access_token),
             console.log('Token Recived'),
           );
         }
@@ -52,18 +54,6 @@ export class LoginScreen extends Component {
       });
   };
 
-  /*
-        getMyValue = async () => {
-            try {
-                const value = await AsyncStorage.getItem('@BearerT');
-                console.log('Get: '+ value);
-            } catch(e) {
-                console.log('Get Error: '+e)
-            }
-            console.log('Complete')
-        };
-    */
-
   saveToken = async token => {
     try {
       await AsyncStorage.setItem('@BearerT', token);
@@ -71,6 +61,7 @@ export class LoginScreen extends Component {
       console.log(e);
     }
     console.log('Info was Saved');
+    this.props.navigation.navigate('Parent');
   };
 
   render() {

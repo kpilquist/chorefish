@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export class LoginScreen extends Component {
+export class childHome extends Component {
   constructor(props) {
     super(props);
     this.state = {

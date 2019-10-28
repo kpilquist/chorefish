@@ -1,42 +1,54 @@
 import React, {Component} from 'react';
-import {Keyboard, Text, TextInput, ToastAndroid, TouchableOpacity, View} from 'react-native';
+import {View, ActivityIndicator, StatusBar, StyleSheet} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
+import './global';
+export class loadingScreen extends Component {
+  componentDidMount() {
+    this._bootstrapAsync().then(this.login);
+  }
 
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            password: ''
-        }
-    }
+  _bootstrapAsync = async () => {
+    global.bearer = await AsyncStorage.getItem('@BearerT');
+  };
 
-    validate() {
-        //include your validation inside if condition
-        if (this.state.password == "yourname") {
-            ToastAndroid.show("Success", ToastAndroid.SHORT)
-            // navigate to next screen
-        } else {
-            Keyboard.dismiss();
-            ToastAndroid.show("Wrong password, try again", ToastAndroid.SHORT)
-        }
-    }
+  login = async () => {
+    axios
+      .get(global.url + '/api/auth/user', {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          Authorization: 'Bearer ' + global.bearer,
+        },
+      })
+      .then(response => {
+        response.data.ischild
+          ? this.props.navigation.navigate('cHome')
+          : this.props.navigation.navigate('pHome');
+      })
+      .catch(error => {
+        console.log(error);
+        this.props.navigation.navigate('Home');
+      });
+  };
 
-    render() {
-        return (
-            <View style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#ddd', flex: 1}}>
-                <TextInput
-                    style={{width: '90%', backgroundColor: 'white'}}
-                    returnKeyType="go"
-                    secureTextEntry
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    autoFocus={true}
-                    onChangeText={(password) => this.setState({password})}
-                />
-                <TouchableOpacity onPress={() => this.validate()}
-                                  style={{padding: 15, backgroundColor: 'rgb(102, 192, 231)'}}>
-                    <Text>Next</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
+  render() {
+    return (
+      <View style={[styles.container, styles.horizontal]}>
+        <ActivityIndicator />
+        <StatusBar backgroundColor="blue" barStyle="light-content" />
+      </View>
+    );
+  }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+});

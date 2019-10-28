@@ -1,23 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {ScrollView, StyleSheet, Text} from 'react-native';
-import '../global';
+import './global';
+import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-export class accountScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      titleText: '=-=-=-=-=-=:>',
-    };
-  }
-
-  componentDidMount() {
-    this.getData().then();
-  }
-
-  getData = async () => {
+export default class logout extends Component {
+  logout = async () => {
     axios
-      .get(global.url + '/api/auth/user', {
+      .get(global.url + '/api/auth/logout', {
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
@@ -25,18 +14,25 @@ export class accountScreen extends Component {
         },
       })
       .then(response => {
-        this.setState({titleText: JSON.stringify(response.data)});
+        console.log('User Details: ' + JSON.stringify(response));
+        this.props.navigation.navigate('AuthLoading');
       })
       .catch(error => {
         console.log(error);
-        this.setState({titleText: JSON.stringify(error)});
+        this.props.navigation.navigate('AuthLoading');
       });
   };
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text> Server Info: {this.state.titleText}</Text>
+        <Text style={styles.container}>Log Out</Text>
+
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => this.logout()}>
+          <Text style={styles.submitButtonText}> Submit </Text>
+        </TouchableOpacity>
       </ScrollView>
     );
   }
