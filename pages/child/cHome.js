@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import './global';
-import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from 'react-native';
+import {ScrollView, StyleSheet, Text,} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export class LoginScreen extends Component {
+export class childHome extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,10 +22,9 @@ export class LoginScreen extends Component {
     };
 
     login = (email, password) => {
-        this.props.navigation.navigate('loading');
         axios
             .post(
-                global.url + '/api/auth/login',
+                'http://192.168.1.8:8000/api/auth/login',
                 {email, password},
                 {
                     headers: {
@@ -38,16 +36,26 @@ export class LoginScreen extends Component {
             .then(response => {
                 if (response.data.hasOwnProperty('access_token')) {
                     this.saveToken(response.data.access_token).then(
-                        (global.bearer = response.data.access_token),
                         console.log('Token Recived'),
                     );
                 }
             })
             .catch(error => {
                 console.log(error);
-                this.props.navigation.navigate('Login');
             });
     };
+
+    /*
+            getMyValue = async () => {
+                try {
+                    const value = await AsyncStorage.getItem('@BearerT');
+                    console.log('Get: '+ value);
+                } catch(e) {
+                    console.log('Get Error: '+e)
+                }
+                console.log('Complete')
+            };
+        */
 
     saveToken = async token => {
         try {
@@ -56,38 +64,12 @@ export class LoginScreen extends Component {
             console.log(e);
         }
         console.log('Info was Saved');
-        this.props.navigation.navigate('AuthLoading');
     };
 
     render() {
         return (
             <ScrollView style={styles.container}>
-                <Text style={styles.container}>Login</Text>
-                <TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder="Email"
-                    placeholderTextColor="#9a73ef"
-                    autoCapitalize="none"
-                    onChangeText={this.handleEmail}
-                />
-
-                <TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder="Password"
-                    placeholderTextColor="#9a73ef"
-                    autoCapitalize="none"
-                    onChangeText={this.handlePassword}
-                />
-                <View style={styles.container}/>
-
-                <TouchableOpacity
-                    style={styles.submitButton}
-                    onPress={() => this.login(this.state.email, this.state.password)}>
-                    <Text style={styles.submitButtonText}> Submit </Text>
-                </TouchableOpacity>
-
+                <Text style={styles.container}>Child Home</Text>
                 <Text>{this.state.titleText}</Text>
             </ScrollView>
         );
