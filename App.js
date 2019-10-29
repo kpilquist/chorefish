@@ -1,93 +1,113 @@
-import React from 'react';
-
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
+
 import {LoginScreen} from './pages/login';
 import {signUpScreen} from './pages/signup';
-//TODO https://reactnativeexample.com/react-native-table-component/ Already installed package for table.
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.item}>
-          <Image
-            source={require('./img/ChoreFish.jpg')}
-            style={styles.mainImg}
-          />
-        </View>
+import {childHome} from './pages/child/cHome';
+import {parentHome} from './pages/parent/pHome';
+import {loadingScreen} from './pages/loading';
+import {HomeScreen} from './pages/appHome';
+import {loader} from './pages/load';
+import logout from './pages/logout';
+import {View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {accountScreen} from './pages/parent/account';
+import {mkChldScreen} from './pages/parent/mkChld';
+import React from 'react';
 
-        <View style={styles.tbutton}>
-          <TouchableOpacity
-            title="Login"
-            style={styles.touchableButton}
-            onPress={() => this.props.navigation.push('Login')}>
-            <Text style={styles.touchableText}>Log In</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.tbutton}>
-          <TouchableOpacity
-            title="Sign Up"
-            style={styles.touchableButton}
-            onPress={() => this.props.navigation.push('Signup')}>
-            <Text style={styles.touchableText}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-}
+const childStack = createStackNavigator({
+  cHome: childHome,
+});
 
-const AppNavigator = createStackNavigator(
+const AuthStack = createStackNavigator({
+  Home: HomeScreen,
+  Login: LoginScreen,
+  Signup: signUpScreen,
+  Logout: logout,
+});
+
+const parentNav = createMaterialBottomTabNavigator(
   {
-    Home: HomeScreen,
-    Login: LoginScreen,
-    Signup: signUpScreen,
+    ParentHome: {
+      screen: parentHome,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-home'} />
+          </View>
+        ),
+      },
+    },
+    Profile: {
+      screen: accountScreen,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />
+          </View>
+        ),
+      },
+    },
+    NewChild: {
+      screen: mkChldScreen,
+      navigationOptions: {
+        tabBarLabel: 'New Child',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-child'} />
+          </View>
+        ),
+      },
+    },
+    Reload: {
+      screen: loadingScreen,
+      navigationOptions: {
+        tabBarLabel: 'Restart',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-refresh'} />
+          </View>
+        ),
+      },
+    },
+    Logout: {
+      screen: logout,
+      navigationOptions: {
+        tabBarLabel: 'Log Out',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon
+              style={[{color: tintColor}]}
+              size={25}
+              name={'ios-settings'}
+            />
+          </View>
+        ),
+      },
+    },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'ParentHome',
+    activeColor: '#f0edf6',
+    inactiveColor: '#ff8151',
+    barStyle: {backgroundColor: '#7a42f4'},
   },
 );
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-    borderColor: '#8B82FE',
-  },
-  item: {
-    justifyContent: 'center',
-  },
-  tbutton: {
-    paddingTop: 25,
-    width: '80%',
-  },
-  title: {
-    fontSize: 19,
-    fontWeight: 'bold',
-  },
-  activeTitle: {
-    color: 'red',
-  },
-  mainImg: {
-    width: 400,
-    height: 400,
-  },
-
-  touchableButton: {
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#292050',
-    alignItems: 'center',
-    backgroundColor: '#8B82FE',
-    padding: 10,
-  },
-
-  touchableText: {
-    fontSize: 20,
-    color: '#fff',
-  },
-});
-
-export default createAppContainer(AppNavigator);
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      loading: loader,
+      AuthLoading: loadingScreen,
+      Child: childStack,
+      Parent: parentNav,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'AuthLoading',
+    },
+  ),
+);

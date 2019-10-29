@@ -38,6 +38,8 @@ target 'ChoreFishReact' do
 
   pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'ChoreFishReactTests' do
     inherit! :search_paths
     # Pods for testing
