@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import axios from 'axios';
+import '../global';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 
 export class parentHome extends Component {
   constructor(props) {
@@ -15,30 +11,33 @@ export class parentHome extends Component {
     };
   }
 
+  componentDidMount() {
+    this.getData().then();
+  }
+
+  getData = async () => {
+    axios
+      .get(global.url + '/api/auth/family', {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          Authorization: 'Bearer ' + global.bearer,
+        },
+      })
+      .then(response => {
+        this.setState({titleText: JSON.stringify(response.data.success)});
+      })
+      .catch(error => {
+        console.log(error.data);
+        this.setState({titleText: JSON.stringify(error.data)});
+      });
+  };
+
   render() {
     return (
       <ScrollView style={styles.container}>
         <Text>Parent Home</Text>
-        <View style={styles.tbutton}>
-          <TouchableOpacity
-            title="Account"
-            style={styles.submitButton}
-            onPress={() => this.props.navigation.push('Other')}>
-            <Text style={styles.submitButtonText}>Account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            title="loading"
-            style={styles.submitButton}
-            onPress={() => this.props.navigation.navigate('AuthLoading')}>
-            <Text style={styles.submitButtonText}>Loading</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            title="logout"
-            style={styles.submitButton}
-            onPress={() => this.props.navigation.navigate('Logout')}>
-            <Text style={styles.submitButtonText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
+        <View style={styles.view} />
         <Text>Test: {this.state.titleText}</Text>
       </ScrollView>
     );
@@ -48,6 +47,9 @@ export class parentHome extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 23,
+  },
+  view: {
+    alignItems: 'center',
   },
   input: {
     margin: 15,
@@ -64,5 +66,20 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: 'white',
+  },
+  touchableButton: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#292050',
+    alignItems: 'center',
+    backgroundColor: '#8B82FE',
+    paddingTop: 10,
+    paddingBottom: 10,
+    width: '75%',
+  },
+
+  touchableText: {
+    fontSize: 20,
+    color: '#fff',
   },
 });

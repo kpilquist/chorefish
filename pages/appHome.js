@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   mainImg: {
-    width: 375,
-    height: 375,
+    width: 350,
+    height: 350,
   },
 
   touchableButton: {

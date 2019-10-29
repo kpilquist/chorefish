@@ -30,6 +30,7 @@ export class LoginScreen extends Component {
   };
 
   login = (email, password) => {
+    this.props.navigation.navigate('loading');
     axios
       .post(
         global.url + '/api/auth/login',
@@ -51,6 +52,7 @@ export class LoginScreen extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.props.navigation.navigate('Login');
       });
   };
 
@@ -61,7 +63,7 @@ export class LoginScreen extends Component {
       console.log(e);
     }
     console.log('Info was Saved');
-    this.props.navigation.navigate('Parent');
+    this.props.navigation.navigate('AuthLoading');
   };
 
   render() {

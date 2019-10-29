@@ -3,6 +3,7 @@ import {View, ActivityIndicator, StatusBar, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import './global';
+
 export class loadingScreen extends Component {
   componentDidMount() {
     this._bootstrapAsync().then(this.login);
@@ -24,7 +25,8 @@ export class loadingScreen extends Component {
       .then(response => {
         response.data.ischild
           ? this.props.navigation.navigate('cHome')
-          : this.props.navigation.navigate('pHome');
+          : this.props.navigation.navigate('ParentHome');
+        //todo: add logic for email not verified and subscription status
       })
       .catch(error => {
         console.log(error);
