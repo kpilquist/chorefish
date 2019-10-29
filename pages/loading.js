@@ -5,6 +5,7 @@ import axios from 'axios';
 import './global';
 
 export class loadingScreen extends Component {
+
   componentDidMount() {
     this._bootstrapAsync().then(this.login);
   }

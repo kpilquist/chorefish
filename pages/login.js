@@ -61,6 +61,7 @@ export class LoginScreen extends Component {
       await AsyncStorage.setItem('@BearerT', token);
     } catch (e) {
       console.log(e);
+
     }
     console.log('Info was Saved');
     this.props.navigation.navigate('AuthLoading');
@@ -102,7 +103,7 @@ export class LoginScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+container: {
     paddingTop: 23,
   },
   input: {

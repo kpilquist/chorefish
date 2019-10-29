@@ -1,5 +1,4 @@
 import React from 'react';
-
  //alternative library https://tipsi.github.io/tipsi-stripe/docs/usage.html
 Stripe.int({
   publishableKey: 'pk_',

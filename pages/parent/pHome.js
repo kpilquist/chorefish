@@ -4,6 +4,7 @@ import '../global';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 
 export class parentHome extends Component {
+
   constructor(props) {
     super(props);
     this.state = {

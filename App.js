@@ -17,6 +17,7 @@ import {mkChldScreen} from './pages/parent/mkChld';
 import React from 'react';
 
 const childStack = createStackNavigator({
+
   cHome: childHome,
 });
 
@@ -110,4 +111,5 @@ export default createAppContainer(
       initialRouteName: 'AuthLoading',
     },
   ),
+
 );
