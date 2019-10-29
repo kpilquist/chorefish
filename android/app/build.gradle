@@ -179,9 +179,13 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-push-notification')
+    implementation project(':tipsi-stripe')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
-
+    include ':react-native-stripe'
+    project(':react-native-stripe').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-stripe/android')
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
@@ -199,3 +203,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+include ':react-native-stripe'
+project(':react-native-stripe').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-stripe/android')

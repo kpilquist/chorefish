@@ -1,6 +1,6 @@
 module.exports = {
-    project: {
-        ios: {},
-        android: {}, // grouped into "project"
-    },
+  project: {
+    ios: {},
+    android: {}, // grouped into "project"
+  },
 };
