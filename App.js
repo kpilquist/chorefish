@@ -14,6 +14,8 @@ import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {accountScreen} from './pages/parent/account';
 import {mkChldScreen} from './pages/parent/mkChld';
+import {mkChoreScreen} from './pages/parent/mkChore';
+
 import React from 'react';
 
 const childStack = createStackNavigator({
@@ -62,13 +64,13 @@ const parentNav = createMaterialBottomTabNavigator(
         ),
       },
     },
-    Reload: {
-      screen: loadingScreen,
+    New: {
+      screen: mkChoreScreen,
       navigationOptions: {
-        tabBarLabel: 'Restart',
+        tabBarLabel: 'New Chore',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-refresh'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'new-message'} />
           </View>
         ),
       },
@@ -76,7 +78,7 @@ const parentNav = createMaterialBottomTabNavigator(
     Logout: {
       screen: logout,
       navigationOptions: {
-        tabBarLabel: 'Log Out',
+        tabBarLabel: 'Logout',
         tabBarIcon: ({tintColor}) => (
           <View>
             <Icon
