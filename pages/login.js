@@ -46,7 +46,6 @@ export class LoginScreen extends Component {
         if (response.data.hasOwnProperty('access_token')) {
           this.saveToken(response.data.access_token).then(
             (global.bearer = response.data.access_token),
-            console.log('Token Recived'),
           );
         }
       })
@@ -62,7 +61,6 @@ export class LoginScreen extends Component {
     } catch (e) {
       console.log(e);
     }
-    console.log('Info was Saved');
     this.props.navigation.navigate('AuthLoading');
   };
 

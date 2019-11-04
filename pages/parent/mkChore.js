@@ -6,15 +6,16 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Switch,
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import axios from 'axios';
 import '../global';
-
+import AsyncStorage from '@react-native-community/async-storage';
 export class mkChoreScreen extends React.Component {
   constructor(props) {
     super(props);
-
+    this.getData();
     this.state = {
       name: '',
       description: '',
@@ -29,8 +30,19 @@ export class mkChoreScreen extends React.Component {
       showHr: true,
       complete: true,
       chore: true,
+      children: [],
+      buttons: [],
     };
   }
+
+  getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@children');
+      this.setState({children: JSON.parse(value)});
+    } catch (e) {
+      // error reading value
+    }
+  };
 
   toggleSwitch = value => {
     this.setState({showHr: value});
@@ -101,7 +113,7 @@ export class mkChoreScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+     <View style={styles.container}>
           <Text style={styles.topLabelText}>Type:</Text>
           <SwitchSelector
             options={typeOptions}
@@ -143,7 +155,7 @@ export class mkChoreScreen extends React.Component {
 
           <View style={styles.labelContainer}>
             {!this.state.showHr && (
-              <Text style={styles.labelText}>Allowance: </Text>
+              <Text style={styles.labelText}>Allowance:</Text>
             )}
 
             {!this.state.showHr && (
@@ -202,7 +214,7 @@ export class mkChoreScreen extends React.Component {
               )}
             </View>
           </View>
-          <Text style={styles.labelText}>Status:</Text>
+          {this.state.chore && <Text style={styles.labelText}>Status:</Text>}
           {this.state.chore && (
             <SwitchSelector
               options={completeOptions}
@@ -238,7 +250,7 @@ export class mkChoreScreen extends React.Component {
               {backgroundColor: this.state.disabled ? '#7a42f4' : '#C0C0C0'},
             ]}
             onPress={() => this.handelSubmit()}>
-            <Text style={styles.submitButtonText}> Submit </Text>
+            <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
           <Text>{this.state.titleText}</Text>
         </View>
@@ -246,6 +258,7 @@ export class mkChoreScreen extends React.Component {
     );
   }
 }
+
 const typeOptions = [
   {label: 'Chore', value: true},
   {label: 'Activity', value: false},

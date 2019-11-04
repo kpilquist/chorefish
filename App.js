@@ -1,7 +1,7 @@
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
-
+import React from 'react';
 import {LoginScreen} from './pages/login';
 import {signUpScreen} from './pages/signup';
 import {childHome} from './pages/child/cHome';
@@ -15,8 +15,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {accountScreen} from './pages/parent/account';
 import {mkChldScreen} from './pages/parent/mkChld';
 import {mkChoreScreen} from './pages/parent/mkChore';
+import {demeritScreen} from './pages/parent/dmrt';
 
-import React from 'react';
 
 const childStack = createStackNavigator({
   cHome: childHome,
@@ -43,9 +43,9 @@ const parentNav = createMaterialBottomTabNavigator(
       },
     },
     Profile: {
-      screen: accountScreen,
+      screen: demeritScreen,
       navigationOptions: {
-        tabBarLabel: 'Profile',
+        tabBarLabel: 'Demerit',
         tabBarIcon: ({tintColor}) => (
           <View>
             <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />

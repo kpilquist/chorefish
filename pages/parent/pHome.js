@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../global';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
-
+import AsyncStorage from '@react-native-community/async-storage';
 export class parentHome extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +15,10 @@ export class parentHome extends Component {
       tableData: [],
       approvalTableHead: ['Name', 'Type', 'Reward', 'Child'],
       approvalTableData: [],
+      choresHead: ['Name', 'Child', 'Reward', 'Age'],
+      choresData: [],
+      demeritHead: ['Name', 'Age', 'Guardian', 'Demerit'],
+      demeritData: [],
     };
   }
 
@@ -37,6 +41,45 @@ export class parentHome extends Component {
     this.setState({tableData: result});
   };
 
+  saveChildren = async data => {
+    try {
+      await AsyncStorage.setItem('@children', data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  choreTableHandler = data => {
+    let result = [];
+    for (let i in data) {
+      let reward = '';
+      //If fails look at approvalTableHandler
+      if (data[i].screentime === '00:00') {
+        reward = '$' + data[i].moneyValue;
+      } else {
+        reward = data[i].screentime;
+      }
+
+      result.push([data[i].name, data[i].fname, reward, data[i].created_at]);
+    }
+    this.setState({choresData: result});
+  };
+
+  demeritTableHandler = data => {
+    var result = [];
+
+    for (let i in data) {
+      result.push([
+        data[i].description,
+        data[i].fname,
+        data[i].name,
+        data[i].ammount,
+      ]);
+    }
+
+    this.setState({demeritData: result});
+  };
+
   approvalTableHandler = data => {
     var res = [];
 
@@ -57,7 +100,7 @@ export class parentHome extends Component {
 
       let reward = '';
       let money = data[i].moneyValue;
-
+      //If fails look at choreTableHandler
       money === undefined || money == null || money >= 0.25
         ? (reward = '$' + money)
         : (reward = data[i].screentime);
@@ -80,8 +123,9 @@ export class parentHome extends Component {
       .then(response => {
         this.tableHandler(response.data.users);
         this.approvalTableHandler(response.data.approval);
-        console.log(this.state.approvalTableData);
-        console.log(JSON.stringify(response.data.approval));
+        this.choreTableHandler(response.data.chores);
+        this.demeritTableHandler(response.data.infractions);
+        this.saveChildren(JSON.stringify(response.data.children));
       })
       .catch(error => {
         console.log(error);
@@ -91,7 +135,7 @@ export class parentHome extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text>Parent Home</Text>
+        <Text>Status:</Text>
         <View style={styles.tableContainer}>
           <Table borderStyle={styles.tableBorder}>
             <Row
@@ -102,6 +146,7 @@ export class parentHome extends Component {
             <Rows data={this.state.tableData} textStyle={styles.text} />
           </Table>
         </View>
+        <Text>Completed Chores:</Text>
         <View style={styles.tableContainer}>
           <Table borderStyle={styles.tableBorder}>
             <Row
@@ -110,6 +155,28 @@ export class parentHome extends Component {
               textStyle={styles.text}
             />
             <Rows data={this.state.approvalTableData} textStyle={styles.text} />
+          </Table>
+        </View>
+        <Text>Assigned Chores</Text>
+        <View style={styles.tableContainer}>
+          <Table borderStyle={styles.tableBorder}>
+            <Row
+              data={this.state.choresHead}
+              style={styles.head}
+              textStyle={styles.text}
+            />
+            <Rows data={this.state.choresData} textStyle={styles.text} />
+          </Table>
+        </View>
+        <Text>Demerits</Text>
+        <View style={styles.tableContainer}>
+          <Table borderStyle={styles.tableBorder}>
+            <Row
+              data={this.state.demeritHead}
+              style={styles.head}
+              textStyle={styles.text}
+            />
+            <Rows data={this.state.demeritData} textStyle={styles.text} />
           </Table>
         </View>
         <View style={styles.view} />
