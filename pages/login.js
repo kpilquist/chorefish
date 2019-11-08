@@ -50,7 +50,7 @@ export class LoginScreen extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
+        console.log(JSON.stringify(error));
         this.props.navigation.navigate('Login');
       });
   };

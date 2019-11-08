@@ -48,7 +48,7 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'Demerit',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-nuclear'} />
           </View>
         ),
       },
@@ -59,7 +59,7 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'New Child',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-child'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-person-add'} />
           </View>
         ),
       },
@@ -70,7 +70,7 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'New Chore',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'new-message'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-compass'} />
           </View>
         ),
       },

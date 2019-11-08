@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import axios from 'axios';
 import '../global';
 import SwitchSelector from 'react-native-switch-selector';
 import {ChildrenList} from '../children';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export class demeritScreen extends React.Component {
   constructor(props) {
@@ -33,13 +33,13 @@ export class demeritScreen extends React.Component {
     }
   }
 
-
   handelSub = () => {
     console.log(this.state);
   };
 
-
-
+  updateState(data) {
+    this.setState({childrenString: data});
+  }
 
   handelSubmit = () => {
     this.setState({disabled: false});
@@ -77,91 +77,95 @@ export class demeritScreen extends React.Component {
 
   render() {
     return (
+      <ScrollView>
+        <View style={styles.container}>
+          <ChildrenList updateParentState={this.updateState.bind(this)} />
+          <Text>{this.state.childrenString}</Text>
+          <Text style={styles.labelText}>Type:</Text>
+          <SwitchSelector
+            options={Options}
+            initial={0}
+            onPress={value => this.setState({reward: value})}
+            borderColor={'#292050'}
+            buttonColor={'#7a42f4'}
+            textColor={'#ff8151'}
+            selectedColor={'#fff'}
+            backgroundColor={'#584c87'}
+            style={styles.sw1}
+          />
 
-      <View style={styles.container}>
-        <ChildrenList />
-        <Text style={styles.labelText}>Type:</Text>
-        <SwitchSelector
-          options={Options}
-          initial={0}
-          onPress={value => this.setState({reward: value})}
-          borderColor={'#292050'}
-          buttonColor={'#7a42f4'}
-          textColor={'#ff8151'}
-          selectedColor={'#fff'}
-          backgroundColor={'#584c87'}
-          style={styles.sw1}
-        />
-
-        <View style={styles.labelContainer}>
-          {!this.state.reward && (
-            <Text style={styles.labelText}>Allowance: </Text>
-          )}
-
-          {!this.state.reward && (
-            <TextInput
-              style={[
-                styles.moneyInput,
-                {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-              ]}
-              underlineColorAndroid="transparent"
-              placeholder="Amount"
-              placeholderTextColor="#C0C0C0"
-              autoCapitalize="none"
-              onChangeText={this.handleAllowance}
-              editable={this.state.disabled}
-            />
-          )}
-        </View>
-
-        <View style={styles.timeContainer}>
           <View style={styles.labelContainer}>
-            {this.state.reward && <Text style={styles.labelText}>Hours</Text>}
+            {!this.state.reward && (
+              <Text style={styles.labelText}>Allowance: </Text>
+            )}
 
-            {this.state.reward && (
+            {!this.state.reward && (
               <TextInput
                 style={[
-                  styles.timeInput,
+                  styles.moneyInput,
                   {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
                 ]}
                 underlineColorAndroid="transparent"
-                placeholder="Hours"
+                placeholder="Amount"
                 placeholderTextColor="#C0C0C0"
                 autoCapitalize="none"
-                onChangeText={this.handelHr}
+                onChangeText={this.handleAllowance}
                 editable={this.state.disabled}
               />
             )}
           </View>
 
-          <View style={styles.labelContainer}>
-            {this.state.reward && <Text style={styles.labelText}>Minutes</Text>}
-            {this.state.reward && (
-              <TextInput
-                style={[
-                  styles.timeInput,
-                  {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-                ]}
-                underlineColorAndroid="transparent"
-                placeholder="Minutes"
-                placeholderTextColor="#C0C0C0"
-                autoCapitalize="none"
-                onChangeText={this.handleMin}
-                editable={this.state.disabled}
-              />
-            )}
+          <View style={styles.timeContainer}>
+            <View style={styles.labelContainer}>
+              {this.state.reward && <Text style={styles.labelText}>Hours</Text>}
+
+              {this.state.reward && (
+                <TextInput
+                  style={[
+                    styles.timeInput,
+                    {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+                  ]}
+                  underlineColorAndroid="transparent"
+                  placeholder="Hours"
+                  placeholderTextColor="#C0C0C0"
+                  autoCapitalize="none"
+                  onChangeText={this.handelHr}
+                  editable={this.state.disabled}
+                />
+              )}
+            </View>
+
+            <View style={styles.labelContainer}>
+              {this.state.reward && (
+                <Text style={styles.labelText}>Minutes</Text>
+              )}
+              {this.state.reward && (
+                <TextInput
+                  style={[
+                    styles.timeInput,
+                    {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+                  ]}
+                  underlineColorAndroid="transparent"
+                  placeholder="Minutes"
+                  placeholderTextColor="#C0C0C0"
+                  autoCapitalize="none"
+                  onChangeText={this.handleMin}
+                  editable={this.state.disabled}
+                />
+              )}
+            </View>
           </View>
+          <TouchableOpacity
+            style={[
+              styles.submitButton,
+              {backgroundColor: this.state.disabled ? '#7a42f4' : '#C0C0C0'},
+            ]}
+            onPress={() => this.handelSub()}>
+            <Text style={styles.submitButtonText}> Submit </Text>
+          </TouchableOpacity>
+          <Text>{this.state.titleText}</Text>
         </View>
-        <TouchableOpacity
-          style={[
-            styles.submitButton,
-            {backgroundColor: this.state.disabled ? '#7a42f4' : '#C0C0C0'},
-          ]}
-          onPress={() => this.handelSub()}>
-          <Text style={styles.submitButtonText}> Submit </Text>
-        </TouchableOpacity>
-        <Text>{this.state.titleText}</Text>
-      </View>
+      </ScrollView>
     );
   }
 }

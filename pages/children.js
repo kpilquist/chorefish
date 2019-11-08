@@ -8,61 +8,70 @@ export class ChildrenList extends React.Component {
     this.dataHandler();
     this.state = {
       children: [],
-      selected: [],
+      selected: '',
     };
   }
 
-  componentDidMount() {
-    this.dataHandler();
+  updateParentState(data) {
+    this.props.updateParentState(data);
   }
 
   async dataHandler() {
     let value = await AsyncStorage.getItem('@children');
-    this.setState({children: JSON.parse(value)});
+    let obj = JSON.parse(value);
+    obj.map(item => {
+      item.isSelect = false;
+    });
+    this.setState({children: obj});
   }
 
   onSelect = id => {
-    console.log('ID: ' + id);
-    const newSelected = new Map(this.state.selected);
-    console.log(this.state);
-    newSelected.set(id, !this.state.selected.get(id));
-
-    this.setState({selected: newSelected});
+    let arr = this.state.children;
+    let index = arr.filter(function(item) {
+      if (item.id === id) {
+        item.isSelect = !item.isSelect;
+      }
+    });
+    this.setState({children: arr});
+    let ids = [];
+    let ind = arr.filter(function(item) {
+      if (item.isSelect) {
+        ids.push(item.id);
+      }
+    });
+    this.setState({selected: ids.toString()});
+    this.updateParentState(ids.toString());
   };
+
+  renderItem = item => (
+    <TouchableOpacity
+      onPress={() => {
+        this.onSelect(item.item.id);
+      }}
+      style={[
+        styles.item,
+        {backgroundColor: !item.item.isSelect ? '#292050' : '#7a42f4'},
+      ]}>
+      <Text
+        style={[
+          styles.title,
+          {color: !item.item.isSelect ? '#ff8151' : '#fff'},
+        ]}>
+        {item.item.title}
+      </Text>
+    </TouchableOpacity>
+  );
 
   render() {
     return (
-      <View style={styles.container}>
-        <FlatList
-          data={this.state.children}
-          renderItem={({item}) => (
-            <Item
-              id={item.id}
-              title={item.title}
-              onSelect={() => {
-                this.onSelect();
-              }}
-            />
-          )}
-          keyExtractor={item => item.id}
-          extraData={this.state.selected}
-        />
-      </View>
+      <FlatList
+        data={this.state.children}
+        renderItem={item => this.renderItem(item)}
+        keyExtractor={item => item.id}
+        extraData={this.state}
+      />
     );
   }
-}
-
-function Item({id, title, selected, onSelect}) {
-  return (
-    <TouchableOpacity
-      onPress={() => onSelect(id)}
-      style={[
-        styles.item,
-        {backgroundColor: selected ? '#292050' : '#7a42f4'},
-      ]}>
-      <Text style={styles.title}>{title}</Text>
-    </TouchableOpacity>
-  );
 }
 
 const styles = StyleSheet.create({

@@ -11,6 +11,7 @@ import {
 import SwitchSelector from 'react-native-switch-selector';
 import axios from 'axios';
 import '../global';
+import {ChildrenList} from '../children';
 import AsyncStorage from '@react-native-community/async-storage';
 export class mkChoreScreen extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ export class mkChoreScreen extends React.Component {
       showHr: true,
       complete: true,
       chore: true,
+      childrenString: '',
       children: [],
       buttons: [],
     };
@@ -69,6 +71,9 @@ export class mkChoreScreen extends React.Component {
   handleAllowance = text => {
     this.setState({allowance: text});
   };
+  updateState(data) {
+    this.setState({childrenString: data});
+  }
 
   enable = () => {
     this.setState({disabled: true});
@@ -113,7 +118,9 @@ export class mkChoreScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-     <View style={styles.container}>
+        <View style={styles.container}>
+          <Text style={styles.topLabelText}>Children:</Text>
+          <ChildrenList updateParentState={this.updateState.bind(this)} />
           <Text style={styles.topLabelText}>Type:</Text>
           <SwitchSelector
             options={typeOptions}
