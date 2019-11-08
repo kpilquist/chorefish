@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import {View, ActivityIndicator, StatusBar, StyleSheet} from 'react-native';
 
 export class loader extends Component {

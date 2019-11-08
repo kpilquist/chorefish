@@ -6,6 +6,7 @@ import {Table, Row, Rows} from 'react-native-table-component';
 import AsyncStorage from '@react-native-community/async-storage';
 import {withNavigationFocus} from 'react-navigation';
 export class parentHome extends Component {
+
   constructor(props) {
     super(props);
 

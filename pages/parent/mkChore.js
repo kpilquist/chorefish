@@ -14,6 +14,7 @@ import '../global';
 import {ChildrenList} from '../children';
 import AsyncStorage from '@react-native-community/async-storage';
 export class mkChoreScreen extends React.Component {
+
   constructor(props) {
     super(props);
     this.getData();
