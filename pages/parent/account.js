@@ -4,6 +4,7 @@ import {ScrollView, StyleSheet, Text} from 'react-native';
 import '../global';
 
 export class accountScreen extends Component {
+
   constructor(props) {
     super(props);
     this.state = {

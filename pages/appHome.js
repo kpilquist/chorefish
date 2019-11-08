@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 export class HomeScreen extends Component {
+
   render() {
     return (
       <View style={styles.container}>

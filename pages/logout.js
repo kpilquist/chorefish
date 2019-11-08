@@ -4,6 +4,7 @@ import './global';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 export default class logout extends Component {
+
   logout = async () => {
     axios
       .get(global.url + '/api/auth/logout', {
@@ -57,4 +58,5 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: 'white',
   },
+
 });

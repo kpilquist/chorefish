@@ -19,6 +19,7 @@ import {demeritScreen} from './pages/parent/dmrt';
 
 
 const childStack = createStackNavigator({
+
   cHome: childHome,
 });
 
@@ -112,4 +113,5 @@ export default createAppContainer(
       initialRouteName: 'AuthLoading',
     },
   ),
+
 );
