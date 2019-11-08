@@ -82,7 +82,16 @@ export class mkChoreScreen extends React.Component {
   handelSubmit = () => {
     this.setState({disabled: false});
 
-    const {name, description, hr, min, allowance, chore, complete} = this.state;
+    const {
+      name,
+      description,
+      hr,
+      min,
+      allowance,
+      chore,
+      complete,
+      childrenString,
+    } = this.state;
 
     axios
       .post(
@@ -95,6 +104,7 @@ export class mkChoreScreen extends React.Component {
           min: min,
           allowance: allowance,
           complete: !complete,
+          childrenString: childrenString,
         },
         {
           headers: {
@@ -106,7 +116,10 @@ export class mkChoreScreen extends React.Component {
       )
       .then(response => {
         console.log(response.data);
-        this.setState({titleText: JSON.stringify(response.data.success)});
+        this.setState({
+          disabled: true,
+        });
+        this.props.navigation.navigate('ParentHome');
       })
       .catch(error => {
         console.log(error);

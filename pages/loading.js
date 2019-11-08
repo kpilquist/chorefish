@@ -13,8 +13,6 @@ export class loadingScreen extends Component {
     global.bearer = await AsyncStorage.getItem('@BearerT');
   };
 
-
-
   login = async () => {
     axios
       .get(global.url + '/api/auth/user', {
@@ -32,7 +30,6 @@ export class loadingScreen extends Component {
       })
       .catch(error => {
         console.log(error);
-        this.props.navigation.navigate('Home');
       });
   };
 

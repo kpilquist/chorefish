@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  FlatList,
   ScrollView,
 } from 'react-native';
 import axios from 'axios';
@@ -19,8 +18,10 @@ export class demeritScreen extends React.Component {
     this.state = {
       reward: true,
       disabled: true,
-      pwordError: true,
-      emailError: true,
+      hours: 0,
+      min: 0,
+      desc: '',
+      allowance: 0,
       children: [],
       selectedChildren: {},
       childrenString: '',
@@ -32,11 +33,6 @@ export class demeritScreen extends React.Component {
       this.getData().then(console.log());
     }
   }
-
-  handelSub = () => {
-    console.log(this.state);
-  };
-
   updateState(data) {
     this.setState({childrenString: data});
   }
@@ -44,17 +40,18 @@ export class demeritScreen extends React.Component {
   handelSubmit = () => {
     this.setState({disabled: false});
 
-    const {First_Name, Last_Name, password, email, username} = this.state;
+    const {reward, hours, min, allowance, childrenString, desc} = this.state;
 
     axios
       .post(
-        'http://192.168.1.8:8000/api/auth/mkchld',
+        'http://192.168.1.8:8000/api/auth/demerit',
         {
-          First_Name: First_Name,
-          Last_Name: Last_Name,
-          password: password,
-          email: email,
-          username: username,
+          reward: reward,
+          hr: hours,
+          min: min,
+          moneyValue: allowance,
+          description: desc,
+          childUUID: childrenString,
         },
         {
           headers: {
@@ -65,13 +62,15 @@ export class demeritScreen extends React.Component {
         },
       )
       .then(response => {
-        console.log(response.data);
-        this.setState({titleText: JSON.stringify(response.data.success)});
+        console.log(JSON.stringify(response.data.success));
+
+        this.setState({
+          disabled: true,
+        });
+        this.props.navigation.navigate('ParentHome');
       })
       .catch(error => {
-        console.log(error.data.error);
-        this.setState({titleText: JSON.stringify(error.data.error)});
-        this.enable();
+        console.log(error.data);
       });
   };
 
@@ -80,7 +79,6 @@ export class demeritScreen extends React.Component {
       <ScrollView>
         <View style={styles.container}>
           <ChildrenList updateParentState={this.updateState.bind(this)} />
-          <Text>{this.state.childrenString}</Text>
           <Text style={styles.labelText}>Type:</Text>
           <SwitchSelector
             options={Options}
@@ -109,7 +107,7 @@ export class demeritScreen extends React.Component {
                 placeholder="Amount"
                 placeholderTextColor="#C0C0C0"
                 autoCapitalize="none"
-                onChangeText={this.handleAllowance}
+                onChangeText={value => this.setState({allowance: value})}
                 editable={this.state.disabled}
               />
             )}
@@ -129,7 +127,7 @@ export class demeritScreen extends React.Component {
                   placeholder="Hours"
                   placeholderTextColor="#C0C0C0"
                   autoCapitalize="none"
-                  onChangeText={this.handelHr}
+                  onChangeText={value => this.setState({hour: value})}
                   editable={this.state.disabled}
                 />
               )}
@@ -149,21 +147,36 @@ export class demeritScreen extends React.Component {
                   placeholder="Minutes"
                   placeholderTextColor="#C0C0C0"
                   autoCapitalize="none"
-                  onChangeText={this.handleMin}
+                  onChangeText={value => this.setState({min: value})}
                   editable={this.state.disabled}
                 />
               )}
             </View>
+          </View>
+          <View>
+            <TextInput
+              style={[
+                styles.inputBox,
+                {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+              ]}
+              underlineColorAndroid="transparent"
+              placeholder="Description"
+              multiline
+              numberOfLines={4}
+              placeholderTextColor="#C0C0C0"
+              autoCapitalize="none"
+              onChangeText={val => this.setState({desc: val})}
+              editable={this.state.disabled}
+            />
           </View>
           <TouchableOpacity
             style={[
               styles.submitButton,
               {backgroundColor: this.state.disabled ? '#7a42f4' : '#C0C0C0'},
             ]}
-            onPress={() => this.handelSub()}>
+            onPress={() => this.handelSubmit()}>
             <Text style={styles.submitButtonText}> Submit </Text>
           </TouchableOpacity>
-          <Text>{this.state.titleText}</Text>
         </View>
       </ScrollView>
     );
@@ -307,4 +320,12 @@ const styles = StyleSheet.create({
   },
   number: {fontSize: 14, color: '#000'},
   selected: {backgroundColor: '#FA7B5F'},
+  inputBox: {
+    borderRadius: 10,
+    marginHorizontal: 15,
+    height: 60,
+    borderColor: '#7a42f4',
+    borderWidth: 1,
+    width: 230,
+  },
 });

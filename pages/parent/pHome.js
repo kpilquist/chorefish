@@ -4,6 +4,7 @@ import '../global';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import AsyncStorage from '@react-native-community/async-storage';
+import {withNavigationFocus} from 'react-navigation';
 export class parentHome extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,11 @@ export class parentHome extends Component {
   }
 
   componentDidMount() {
-    this.getData().then();
+    const {navigation} = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      // The screen is focused
+      this.getData().then();
+    });
   }
 
   tableHandler = data => {
