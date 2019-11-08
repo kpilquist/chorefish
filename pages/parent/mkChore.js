@@ -5,46 +5,76 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
+  Switch,
 } from 'react-native';
+import SwitchSelector from 'react-native-switch-selector';
 import axios from 'axios';
 import '../global';
-
+import {ChildrenList} from '../children';
+import AsyncStorage from '@react-native-community/async-storage';
 export class mkChoreScreen extends React.Component {
 
   constructor(props) {
     super(props);
-
+    this.getData();
     this.state = {
-      First_Name: '',
-      Last_Name: '',
-      email: '',
-      password: '',
-      username: '',
+      name: '',
+      description: '',
+      type: '',
+      hr: '0',
+      min: '0',
+      allowance: '0',
       titleText: '',
       disabled: true,
       pwordError: true,
       emailError: true,
+      showHr: true,
+      complete: true,
+      chore: true,
+      childrenString: '',
+      children: [],
+      buttons: [],
     };
   }
 
-  handleEmail = text => {
-    this.setState({email: text});
+  getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@children');
+      this.setState({children: JSON.parse(value)});
+    } catch (e) {
+      // error reading value
+    }
   };
 
-  handlePassword = text => {
-    this.setState({password: text});
-  };
-  handelFirstName = text => {
-    this.setState({First_Name: text});
+  toggleSwitch = value => {
+    this.setState({showHr: value});
   };
 
-  handelSecondName = text => {
-    this.setState({Last_Name: text});
+  handleName = text => {
+    this.setState({name: text});
   };
 
-  handleuserName = text => {
-    this.setState({username: text});
+  handleDescription = text => {
+    this.setState({description: text});
   };
+  handelType = text => {
+    this.setState({type: text});
+  };
+
+  handelHr = text => {
+    this.setState({hr: text});
+  };
+
+  handleMin = text => {
+    this.setState({min: text});
+  };
+  handleAllowance = text => {
+    this.setState({allowance: text});
+  };
+  updateState(data) {
+    this.setState({childrenString: data});
+  }
 
   enable = () => {
     this.setState({disabled: true});
@@ -53,17 +83,19 @@ export class mkChoreScreen extends React.Component {
   handelSubmit = () => {
     this.setState({disabled: false});
 
-    const {First_Name, Last_Name, password, email, username} = this.state;
+    const {name, description, hr, min, allowance, chore, complete} = this.state;
 
     axios
       .post(
-        'http://192.168.1.8:8000/api/auth/mkchld',
+        global.url + '/api/auth/mkchore',
         {
-          First_Name: First_Name,
-          Last_Name: Last_Name,
-          password: password,
-          email: email,
-          username: username,
+          name: name,
+          description: description,
+          type: chore ? 1 : 2,
+          hr: hr,
+          min: min,
+          allowance: allowance,
+          complete: !complete,
         },
         {
           headers: {
@@ -78,101 +110,203 @@ export class mkChoreScreen extends React.Component {
         this.setState({titleText: JSON.stringify(response.data.success)});
       })
       .catch(error => {
-        console.log(error.data.error);
-        this.setState({titleText: JSON.stringify(error.data.error)});
+        console.log(error);
+        this.setState({titleText: JSON.stringify(error)});
         this.enable();
       });
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Add Child</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.topLabelText}>Children:</Text>
+          <ChildrenList updateParentState={this.updateState.bind(this)} />
+          <Text style={styles.topLabelText}>Type:</Text>
+          <SwitchSelector
+            options={typeOptions}
+            initial={0}
+            onPress={value => this.setState({chore: value})}
+            borderColor={'#292050'}
+            buttonColor={'#7a42f4'}
+            textColor={'#ff8151'}
+            selectedColor={'#fff'}
+            backgroundColor={'#584c87'}
+            style={styles.sw1}
+          />
 
-        <Text style={styles.labelText}>First Name</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-          ]}
-          underlineColorAndroid="transparent"
-          placeholder="First Name"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handelFirstName}
-          editable={this.state.disabled}
-        />
-        <Text style={styles.labelText}>Last Name</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-          ]}
-          underlineColorAndroid="transparent"
-          placeholder="Last Name"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handelSecondName}
-          editable={this.state.disabled}
-        />
-        <Text style={styles.labelText}>User Name</Text>
-        <Text style={styles.detail}>No Spaces Allowed</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-          ]}
-          underlineColorAndroid="transparent"
-          placeholder="User Name"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handleuserName}
-          editable={this.state.disabled}
-        />
-        <Text style={styles.labelText}>Password</Text>
-        <Text style={styles.detail}>Minimum of 8 characters</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-          ]}
-          underlineColorAndroid="transparent"
-          placeholder="Password"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handlePassword}
-          editable={this.state.disabled}
-        />
+          <Text style={styles.labelText}>Name</Text>
+          <TextInput
+            style={[
+              styles.input,
+              {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+            ]}
+            underlineColorAndroid="transparent"
+            placeholder="Name"
+            placeholderTextColor="#C0C0C0"
+            autoCapitalize="none"
+            onChangeText={this.handleName}
+            editable={this.state.disabled}
+          />
+          <Text style={styles.labelText}>Reward:</Text>
+          <SwitchSelector
+            options={allowanceOptions}
+            initial={0}
+            onPress={value => this.setState({showHr: value})}
+            borderColor={'#292050'}
+            buttonColor={'#7a42f4'}
+            textColor={'#ff8151'}
+            selectedColor={'#fff'}
+            backgroundColor={'#584c87'}
+            style={styles.sw1}
+          />
 
-        <TouchableOpacity
-          style={[
-            styles.submitButton,
-            {backgroundColor: this.state.disabled ? '#7a42f4' : '#C0C0C0'},
-          ]}
-          onPress={() => this.handelSubmit()}>
-          <Text style={styles.submitButtonText}> Submit </Text>
-        </TouchableOpacity>
-        <Text>{this.state.titleText}</Text>
-      </View>
+          <View style={styles.labelContainer}>
+            {!this.state.showHr && (
+              <Text style={styles.labelText}>Allowance:</Text>
+            )}
+
+            {!this.state.showHr && (
+              <TextInput
+                style={[
+                  styles.moneyInput,
+                  {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+                ]}
+                underlineColorAndroid="transparent"
+                placeholder="Amount"
+                placeholderTextColor="#C0C0C0"
+                autoCapitalize="none"
+                onChangeText={this.handleAllowance}
+                editable={this.state.disabled}
+              />
+            )}
+          </View>
+
+          <View style={styles.timeContainer}>
+            <View style={styles.labelContainer}>
+              {this.state.showHr && <Text style={styles.labelText}>Hours</Text>}
+
+              {this.state.showHr && (
+                <TextInput
+                  style={[
+                    styles.timeInput,
+                    {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+                  ]}
+                  underlineColorAndroid="transparent"
+                  placeholder="Hours"
+                  placeholderTextColor="#C0C0C0"
+                  autoCapitalize="none"
+                  onChangeText={this.handelHr}
+                  editable={this.state.disabled}
+                />
+              )}
+            </View>
+
+            <View style={styles.labelContainer}>
+              {this.state.showHr && (
+                <Text style={styles.labelText}>Minutes</Text>
+              )}
+              {this.state.showHr && (
+                <TextInput
+                  style={[
+                    styles.timeInput,
+                    {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+                  ]}
+                  underlineColorAndroid="transparent"
+                  placeholder="Minutes"
+                  placeholderTextColor="#C0C0C0"
+                  autoCapitalize="none"
+                  onChangeText={this.handleMin}
+                  editable={this.state.disabled}
+                />
+              )}
+            </View>
+          </View>
+          {this.state.chore && <Text style={styles.labelText}>Status:</Text>}
+          {this.state.chore && (
+            <SwitchSelector
+              options={completeOptions}
+              initial={0}
+              onPress={value => this.setState({complete: value})}
+              borderColor={'#292050'}
+              buttonColor={'#7a42f4'}
+              textColor={'#ff8151'}
+              selectedColor={'#fff'}
+              backgroundColor={'#584c87'}
+              style={styles.sw1}
+            />
+          )}
+          <Text style={styles.labelText}>Description</Text>
+          <TextInput
+            style={[
+              styles.inputBox,
+              {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+            ]}
+            underlineColorAndroid="transparent"
+            placeholder="Description"
+            multiline
+            numberOfLines={4}
+            placeholderTextColor="#C0C0C0"
+            autoCapitalize="none"
+            onChangeText={this.handleDescription}
+            editable={this.state.disabled}
+          />
+
+          <TouchableOpacity
+            style={[
+              styles.submitButton,
+              {backgroundColor: this.state.disabled ? '#7a42f4' : '#C0C0C0'},
+            ]}
+            onPress={() => this.handelSubmit()}>
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
+          <Text>{this.state.titleText}</Text>
+        </View>
+      </ScrollView>
     );
   }
 }
+
+const typeOptions = [
+  {label: 'Chore', value: true},
+  {label: 'Activity', value: false},
+];
+const allowanceOptions = [
+  {label: 'Screen Time', value: true},
+  {label: 'Allowance', value: false},
+];
+const completeOptions = [
+  {label: 'Assign', value: true},
+  {label: 'Complete', value: false},
+];
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#e3e1e2',
     flex: 1,
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 7,
   },
   input: {
     borderRadius: 10,
-    margin: 15,
-    marginTop: 1,
+    marginHorizontal: 15,
     height: 40,
     borderColor: '#7a42f4',
     borderWidth: 1,
     width: '75%',
+  },
+  inputBox: {
+    borderRadius: 10,
+    marginHorizontal: 15,
+    height: 60,
+    borderColor: '#7a42f4',
+    borderWidth: 1,
+    width: '75%',
+  },
+  sw1: {
+    margin: 15,
+    marginTop: 5,
+    width: '90%',
   },
   submitButton: {
     borderRadius: 10,
@@ -180,17 +314,46 @@ const styles = StyleSheet.create({
     borderColor: '#292050',
     alignItems: 'center',
     padding: 10,
-    margin: 15,
-    height: 40,
+    marginTop: 4,
+    marginHorizontal: 15,
+    height: 37,
     width: '75%',
   },
   submitButtonText: {
-    color: '#ff8151',
+    color: '#fff',
   },
   labelText: {
     paddingTop: 10,
   },
   detail: {
     fontSize: 8,
+  },
+  timeInput: {
+    borderRadius: 10,
+    margin: 15,
+    marginTop: 1,
+    height: 40,
+    borderColor: '#7a42f4',
+    borderWidth: 1,
+    width: 75,
+  }, //Hours and minute fields change width based on text input if percentage is used for width
+  timeContainer: {
+    flexDirection: 'row',
+  },
+  labelContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 25,
+  },
+  moneyInput: {
+    borderRadius: 10,
+    marginHorizontal: 15,
+    marginBottom: 15,
+    height: 40,
+    borderColor: '#7a42f4',
+    borderWidth: 1,
+    width: 200,
+  },
+  topLabelText: {
+    paddingTop: 25,
   },
 });

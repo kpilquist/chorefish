@@ -1,7 +1,7 @@
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
-
+import React from 'react';
 import {LoginScreen} from './pages/login';
 import {signUpScreen} from './pages/signup';
 import {childHome} from './pages/child/cHome';
@@ -14,7 +14,9 @@ import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {accountScreen} from './pages/parent/account';
 import {mkChldScreen} from './pages/parent/mkChld';
-import React from 'react';
+import {mkChoreScreen} from './pages/parent/mkChore';
+import {demeritScreen} from './pages/parent/dmrt';
+
 
 const childStack = createStackNavigator({
 
@@ -42,12 +44,12 @@ const parentNav = createMaterialBottomTabNavigator(
       },
     },
     Profile: {
-      screen: accountScreen,
+      screen: demeritScreen,
       navigationOptions: {
-        tabBarLabel: 'Profile',
+        tabBarLabel: 'Demerit',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-nuclear'} />
           </View>
         ),
       },
@@ -58,18 +60,18 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'New Child',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-child'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-person-add'} />
           </View>
         ),
       },
     },
-    Reload: {
-      screen: loadingScreen,
+    New: {
+      screen: mkChoreScreen,
       navigationOptions: {
-        tabBarLabel: 'Restart',
+        tabBarLabel: 'New Chore',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-refresh'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-compass'} />
           </View>
         ),
       },
@@ -77,7 +79,7 @@ const parentNav = createMaterialBottomTabNavigator(
     Logout: {
       screen: logout,
       navigationOptions: {
-        tabBarLabel: 'Log Out',
+        tabBarLabel: 'Logout',
         tabBarIcon: ({tintColor}) => (
           <View>
             <Icon

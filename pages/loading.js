@@ -14,6 +14,8 @@ export class loadingScreen extends Component {
     global.bearer = await AsyncStorage.getItem('@BearerT');
   };
 
+
+
   login = async () => {
     axios
       .get(global.url + '/api/auth/user', {
