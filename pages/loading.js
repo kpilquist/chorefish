@@ -5,7 +5,6 @@ import axios from 'axios';
 import './global';
 
 export class loadingScreen extends Component {
-
   componentDidMount() {
     this._bootstrapAsync().then(this.login);
   }
@@ -24,6 +23,7 @@ export class loadingScreen extends Component {
         },
       })
       .then(response => {
+        console.log('Response: ' + response);
         response.data.ischild
           ? this.props.navigation.navigate('cHome')
           : this.props.navigation.navigate('ParentHome');
@@ -31,6 +31,7 @@ export class loadingScreen extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.props.navigation.navigate('Home');
       });
   };
 

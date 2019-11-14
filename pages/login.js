@@ -15,7 +15,7 @@ export class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: 'Result:',
+      titleText: '',
       email: '',
       password: '',
     };
@@ -30,7 +30,7 @@ export class LoginScreen extends Component {
   };
 
   login = (email, password) => {
-    this.props.navigation.navigate('loading');
+    console.log('Login');
     axios
       .post(
         global.url + '/api/auth/login',
@@ -47,9 +47,12 @@ export class LoginScreen extends Component {
           this.saveToken(response.data.access_token).then(
             (global.bearer = response.data.access_token),
           );
+          console.log('Token Recived');
+          this.props.navigation.navigate('AuthLoading');
         }
       })
       .catch(error => {
+        console.log('Token NOT Received');
         console.log(JSON.stringify(error));
         this.props.navigation.navigate('Login');
       });
@@ -60,7 +63,6 @@ export class LoginScreen extends Component {
       await AsyncStorage.setItem('@BearerT', token);
     } catch (e) {
       console.log(e);
-
     }
     this.props.navigation.navigate('AuthLoading');
   };
@@ -101,7 +103,7 @@ export class LoginScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-container: {
+  container: {
     paddingTop: 23,
   },
   input: {

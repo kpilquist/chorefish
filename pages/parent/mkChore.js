@@ -47,10 +47,6 @@ export class mkChoreScreen extends React.Component {
     }
   };
 
-  toggleSwitch = value => {
-    this.setState({showHr: value});
-  };
-
   handleName = text => {
     this.setState({name: text});
   };
@@ -58,8 +54,9 @@ export class mkChoreScreen extends React.Component {
   handleDescription = text => {
     this.setState({description: text});
   };
-  handelType = text => {
-    this.setState({type: text});
+  handelType = data => {
+    this.setState({showHr: data});
+    this.setState({hr: 0, min: 0, allowance: 0});
   };
 
   handelHr = text => {
@@ -140,7 +137,7 @@ export class mkChoreScreen extends React.Component {
             options={typeOptions}
             initial={0}
             onPress={value => this.setState({chore: value})}
-            borderColor={'#292050'}
+            borderColor={'#7a42f4'}
             buttonColor={'#7a42f4'}
             textColor={'#ff8151'}
             selectedColor={'#fff'}
@@ -165,8 +162,10 @@ export class mkChoreScreen extends React.Component {
           <SwitchSelector
             options={allowanceOptions}
             initial={0}
-            onPress={value => this.setState({showHr: value})}
-            borderColor={'#292050'}
+            onPress={value => {
+              this.handelType(value);
+            }}
+            borderColor={'#7a42f4'}
             buttonColor={'#7a42f4'}
             textColor={'#ff8151'}
             selectedColor={'#fff'}
@@ -241,7 +240,7 @@ export class mkChoreScreen extends React.Component {
               options={completeOptions}
               initial={0}
               onPress={value => this.setState({complete: value})}
-              borderColor={'#292050'}
+              borderColor={'#7a42f4'}
               buttonColor={'#7a42f4'}
               textColor={'#ff8151'}
               selectedColor={'#fff'}
@@ -324,7 +323,7 @@ const styles = StyleSheet.create({
   submitButton: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#292050',
+    borderColor: '#7a42f4',
     alignItems: 'center',
     padding: 10,
     marginTop: 4,

@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../global';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import AsyncStorage from '@react-native-community/async-storage';
-import {withNavigationFocus} from 'react-navigation';
-export class parentHome extends Component {
+import Collapsible from 'react-native-collapsible';
 
+export class parentHome extends Component {
   constructor(props) {
     super(props);
 
@@ -17,10 +23,16 @@ export class parentHome extends Component {
       tableData: [],
       approvalTableHead: ['Name', 'Type', 'Reward', 'Child'],
       approvalTableData: [],
-      choresHead: ['Name', 'Child', 'Reward', 'Age'],
+      approvalCollapsed: true,
+      choresHead: ['Name', 'Child', 'Reward'],
       choresData: [],
-      demeritHead: ['Name', 'Age', 'Guardian', 'Demerit'],
+      choresCollapsed: true,
+      demeritHead: ['Child', 'Guardian', 'Amount'],
       demeritData: [],
+      demeritCollapsed: true,
+      activeSections: [],
+      collapsed: true,
+      multipleSelect: true,
     };
   }
 
@@ -66,7 +78,7 @@ export class parentHome extends Component {
         reward = data[i].screentime;
       }
 
-      result.push([data[i].name, data[i].fname, reward, data[i].created_at]);
+      result.push([data[i].name, data[i].fname, reward]);
     }
     this.setState({choresData: result});
   };
@@ -75,12 +87,7 @@ export class parentHome extends Component {
     var result = [];
 
     for (let i in data) {
-      result.push([
-        data[i].description,
-        data[i].fname,
-        data[i].name,
-        data[i].ammount,
-      ]);
+      result.push([data[i].fname, data[i].name, data[i].ammount]);
     }
 
     this.setState({demeritData: result});
@@ -111,10 +118,20 @@ export class parentHome extends Component {
         ? (reward = '$' + money)
         : (reward = data[i].screentime);
 
-      res.push([data[i].title, type, reward, data[i].fname]);
+      res.push([type, reward, data[i].fname]);
     }
 
     this.setState({approvalTableData: res});
+  };
+
+  toggleChore = () => {
+    this.setState({approvalCollapsed: !this.state.approvalCollapsed});
+  };
+  toggleAssigned = () => {
+    this.setState({choresCollapsed: !this.state.choresCollapsed});
+  };
+  toggleDemerits = () => {
+    this.setState({demeritCollapsed: !this.state.demeritCollapsed});
   };
 
   getData = async () => {
@@ -152,41 +169,78 @@ export class parentHome extends Component {
             <Rows data={this.state.tableData} textStyle={styles.text} />
           </Table>
         </View>
-        <Text>Completed Chores:</Text>
-        <View style={styles.tableContainer}>
-          <Table borderStyle={styles.tableBorder}>
-            <Row
-              data={this.state.approvalTableHead}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <Rows data={this.state.approvalTableData} textStyle={styles.text} />
-          </Table>
+
+        <View>
+          <TouchableOpacity onPress={this.toggleChore}>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Completed Chores</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Collapsible collapsed={this.state.approvalCollapsed} align="center">
+            <View style={styles.content}>
+              <View style={styles.tableContainer}>
+                <Table borderStyle={styles.tableBorder}>
+                  <Row
+                    data={this.state.approvalTableHead}
+                    style={styles.head}
+                    textStyle={styles.text}
+                  />
+                  <Rows
+                    data={this.state.approvalTableData}
+                    textStyle={styles.text}
+                  />
+                </Table>
+              </View>
+            </View>
+          </Collapsible>
         </View>
-        <Text>Assigned Chores</Text>
-        <View style={styles.tableContainer}>
-          <Table borderStyle={styles.tableBorder}>
-            <Row
-              data={this.state.choresHead}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <Rows data={this.state.choresData} textStyle={styles.text} />
-          </Table>
+
+        <View>
+          <TouchableOpacity onPress={this.toggleAssigned}>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Assigned Chores</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Collapsible collapsed={this.state.choresCollapsed} align="center">
+            <View style={styles.content}>
+              <View style={styles.tableContainer}>
+                <Table borderStyle={styles.tableBorder}>
+                  <Row
+                    data={this.state.choresHead}
+                    style={styles.head}
+                    textStyle={styles.text}
+                  />
+                  <Rows data={this.state.choresData} textStyle={styles.text} />
+                </Table>
+              </View>
+            </View>
+          </Collapsible>
         </View>
-        <Text>Demerits</Text>
-        <View style={styles.tableContainer}>
-          <Table borderStyle={styles.tableBorder}>
-            <Row
-              data={this.state.demeritHead}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <Rows data={this.state.demeritData} textStyle={styles.text} />
-          </Table>
+
+        <View>
+          <TouchableOpacity onPress={this.toggleDemerits}>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Demerits</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Collapsible collapsed={this.state.demeritCollapsed} align="center">
+            <View style={styles.content}>
+              <View style={styles.tableContainer}>
+                <Table borderStyle={styles.tableBorder}>
+                  <Row
+                    data={this.state.demeritHead}
+                    style={styles.head}
+                    textStyle={styles.text}
+                  />
+                  <Rows data={this.state.demeritData} textStyle={styles.text} />
+                </Table>
+              </View>
+            </View>
+          </Collapsible>
         </View>
-        <View style={styles.view} />
-        <Text>Test: {this.state.titleText}</Text>
       </ScrollView>
     );
   }
@@ -202,11 +256,11 @@ const styles = StyleSheet.create({
   input: {
     margin: 15,
     height: 40,
-    borderColor: '#7a42f4',
+    borderColor: '#292050',
     borderWidth: 1,
   },
   submitButton: {
-    backgroundColor: '#7a42f4',
+    backgroundColor: '#292050',
 
     padding: 10,
     margin: 15,
@@ -239,4 +293,56 @@ const styles = StyleSheet.create({
   head: {height: 40, backgroundColor: '#e0e7ee'},
   text: {margin: 5},
   tableBorder: {borderWidth: 2, borderColor: '#00bdff'},
+  title: {
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: '300',
+    marginBottom: 20,
+  },
+  header: {
+    backgroundColor: '#F5FCFF',
+    padding: 10,
+  },
+  headerText: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  content: {
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  active: {
+    backgroundColor: 'rgba(255,255,255,1)',
+  },
+  inactive: {
+    backgroundColor: 'rgba(245,252,255,1)',
+  },
+  selectors: {
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  selector: {
+    backgroundColor: '#F5FCFF',
+    padding: 10,
+  },
+  activeSelector: {
+    fontWeight: 'bold',
+  },
+  selectTitle: {
+    fontSize: 14,
+    fontWeight: '500',
+    padding: 10,
+  },
+  multipleToggle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 30,
+    alignItems: 'center',
+  },
+  multipleToggle__title: {
+    fontSize: 16,
+    marginRight: 8,
+  },
 });

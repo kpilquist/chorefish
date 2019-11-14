@@ -17,9 +17,7 @@ import {mkChldScreen} from './pages/parent/mkChld';
 import {mkChoreScreen} from './pages/parent/mkChore';
 import {demeritScreen} from './pages/parent/dmrt';
 
-
 const childStack = createStackNavigator({
-
   cHome: childHome,
 });
 
@@ -60,7 +58,11 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'New Child',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-person-add'} />
+            <Icon
+              style={[{color: tintColor}]}
+              size={25}
+              name={'ios-person-add'}
+            />
           </View>
         ),
       },
@@ -96,7 +98,7 @@ const parentNav = createMaterialBottomTabNavigator(
     initialRouteName: 'ParentHome',
     activeColor: '#f0edf6',
     inactiveColor: '#ff8151',
-    barStyle: {backgroundColor: '#7a42f4'},
+    barStyle: {backgroundColor: '#331c57'},
   },
 );
 
@@ -113,5 +115,4 @@ export default createAppContainer(
       initialRouteName: 'AuthLoading',
     },
   ),
-
 );

@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator=\"iPhone 5s\"",
+    "ios 5x": "react-native run-ios --simulator=\"iPhone 5s\"",
+    "ios": "react-native run-ios ",
+    "ipad": "react-native run-ios --simulator=\"iPad\"",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
@@ -15,9 +17,10 @@
     "eslint-plugin-react-native": "3.6.0",
     "react": "16.9.0",
     "react-native": "0.61.2",
+    "react-native-animatable": "^1.3.3",
+    "react-native-collapsible": "^1.5.1",
     "react-native-gesture-handler": "1.4.1",
     "react-native-paper": "^3.0.0",
-
     "react-native-reanimated": "1.3.0",
     "react-native-screens": "1.0.0-alpha.23",
     "react-native-switch-selector": "^2.0.0",
