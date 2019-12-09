@@ -1,81 +1,103 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Icon as ICN} from '../tools/iconGenerator';
+import {ChildChoreView} from './childChore';
+import {ChildHeader} from '../tools/header';
 
 export class childHome extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: 'Result:',
-      email: '',
-      password: '',
+      data: {},
+      fname: '',
+      st: 0,
+      allowance: '',
+      screen: '',
+      negative: false,
+      chores: {},
     };
+    this.getData();
   }
 
-  handleEmail = text => {
-    this.setState({email: text});
+  setTime = seconds => {
+    let negative = Math.sign(seconds);
+    let time = Math.abs(seconds);
+
+    let date = new Date(null);
+    date.setSeconds(time); // specify value for SECONDS here
+    let result = date.toISOString().substr(11, 5);
+
+    this.setState({screen: result, negative: negative});
+
+    return result;
   };
 
-  handlePassword = text => {
-    this.setState({password: text});
-  };
-
-  login = (email, password) => {
+  getData = async () => {
     axios
-      .post(
-        'http://192.168.1.8:8000/api/auth/login',
-        {email, password},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-          },
+      .get(global.url + '/api/auth/child', {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          Authorization: 'Bearer ' + global.bearer,
         },
-      )
+      })
       .then(response => {
-        if (response.data.hasOwnProperty('access_token')) {
-          this.saveToken(response.data.access_token).then(
-            console.log('Token Recived'),
-          );
-        }
+        this.setState({
+          data: response.data.success[0],
+          fname: response.data.success[0].fname,
+          st: response.data.success[0].screenTime,
+          allowance: response.data.success[0].allowance,
+        });
+
+        this.setTime(response.data.success[0].screenTime);
+        this.setState({
+          fname: response.data.success[0].fname,
+          chores: response.data.chores,
+        });
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  /*
-          getMyValue = async () => {
-              try {
-                  const value = await AsyncStorage.getItem('@BearerT');
-                  console.log('Get: '+ value);
-              } catch(e) {
-                  console.log('Get Error: '+e)
-              }
-              console.log('Complete')
-          };
-      */
-
-  saveToken = async token => {
-    try {
-      await AsyncStorage.setItem('@BearerT', token);
-    } catch (e) {
-      console.log(e);
-    }
-    console.log('Info was Saved');
-  };
-
   render() {
+    let sign;
+    if (this.state.negative) {
+      sign = <Text style={[styles.negText, styles.negSign]}>-</Text>;
+    }
     return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.container}>Child Home</Text>
-        <Text>{this.state.titleText}</Text>
-      </ScrollView>
+      <View style={styles.container}>
+        <View style={{alignItems: 'center'}}>
+          <ChildHeader text={this.state.fname +'\'s Chorefish'} />
+
+        </View>
+        <View style={styles.name}>
+          <View style={styles.iconContainer}>
+            <ICN name={this.state.fname} />
+          </View>
+          <View style={styles.screen}>
+            <Icon name={'tv'} size={50} />
+            <View style={{flexDirection: 'column', paddingLeft: 5}}>
+              <Text> Screen: </Text>
+              <Text>
+                {' '}
+                {sign}
+                {this.state.screen}{' '}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.bank}>
+            <Icon name={'piggy-bank'} size={50} />
+            <View style={{flexDirection: 'column', paddingLeft: 5}}>
+              <Text> Bank: </Text>
+              <Text> ${this.state.allowance} </Text>
+            </View>
+          </View>
+        </View>
+        <ChildChoreView data={this.state.chores} fname={this.state.fname} />
+      </View>
     );
   }
 }
@@ -83,20 +105,42 @@ export class childHome extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 23,
+    paddingHorizontal: 2,
   },
-  input: {
-    margin: 15,
-    height: 40,
-    borderColor: '#7a42f4',
-    borderWidth: 1,
+  iconContainer: {
+    width: 50,
+    height: 50,
+    marginVertical: 10,
+    paddingLeft: 5,
   },
-  submitButton: {
-    backgroundColor: '#7a42f4',
-    padding: 10,
-    margin: 15,
-    height: 40,
+  bank: {
+    marginVertical: 5,
+    paddingVertical: 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  submitButtonText: {
-    color: 'white',
+  name: {
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderRadius: 4,
+    marginVertical: 10,
+  },
+  screen: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+  },
+  stAc: {
+    borderWidth: 2,
+    borderRadius: 4,
+    height: 60,
+    marginVertical: 5,
+  },
+  lineStyle:{
+
   },
 });

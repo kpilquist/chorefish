@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import '../global';
+import {ItemView} from './itemView';
 import {
   ScrollView,
   StyleSheet,
@@ -8,10 +9,10 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
+import {ChildButton} from './childButton';
 import AsyncStorage from '@react-native-community/async-storage';
 import Collapsible from 'react-native-collapsible';
-
+import {DemeritPenalties} from '../tools/demerits';
 export class parentHome extends Component {
   constructor(props) {
     super(props);
@@ -19,20 +20,16 @@ export class parentHome extends Component {
     this.state = {
       titleText: '-=-=-=-=-:',
       familyJson: [],
-      tableHead: ['Name', 'Screen Time', 'Allowance'],
-      tableData: [],
-      approvalTableHead: ['Name', 'Type', 'Reward', 'Child'],
-      approvalTableData: [],
       approvalCollapsed: true,
-      choresHead: ['Name', 'Child', 'Reward'],
-      choresData: [],
       choresCollapsed: true,
-      demeritHead: ['Child', 'Guardian', 'Amount'],
-      demeritData: [],
       demeritCollapsed: true,
       activeSections: [],
       collapsed: true,
       multipleSelect: true,
+      childs: {},
+      completed: {},
+      approval: {},
+      demerit: {},
     };
   }
 
@@ -44,21 +41,6 @@ export class parentHome extends Component {
     });
   }
 
-  tableHandler = data => {
-    var result = [];
-
-    for (let i in data) {
-      let st = data[i].screentime;
-      if (st.includes('-')) {
-        st = st.replace(/-/g, '');
-        st = '-' + st;
-      }
-
-      result.push([data[i].fname, st, data[i].allowance]);
-    }
-    this.setState({tableData: result});
-  };
-
   saveChildren = async data => {
     try {
       await AsyncStorage.setItem('@children', data);
@@ -67,61 +49,21 @@ export class parentHome extends Component {
     }
   };
 
-  choreTableHandler = data => {
-    let result = [];
-    for (let i in data) {
-      let reward = '';
-      //If fails look at approvalTableHandler
-      if (data[i].screentime === '00:00') {
-        reward = '$' + data[i].moneyValue;
-      } else {
-        reward = data[i].screentime;
-      }
+  tableHandler = data => {
+    this.setState({childs: data});
+  };
 
-      result.push([data[i].name, data[i].fname, reward]);
-    }
-    this.setState({choresData: result});
+  choreTableHandler = data => {
+    this.setState({completed: data});
   };
 
   demeritTableHandler = data => {
-    var result = [];
-
-    for (let i in data) {
-      result.push([data[i].fname, data[i].name, data[i].ammount]);
-    }
-
-    this.setState({demeritData: result});
+    console.log(data);
+    this.setState({demerit: data});
   };
 
   approvalTableHandler = data => {
-    var res = [];
-
-    for (let i in data) {
-      let type = '';
-
-      switch (data[i].choAct) {
-        case '2':
-          type = 'Activity';
-          break;
-        case 2:
-          type = 'Activity';
-          break;
-        default:
-          type = 'Chore';
-          break;
-      }
-
-      let reward = '';
-      let money = data[i].moneyValue;
-      //If fails look at choreTableHandler
-      money === undefined || money == null || money >= 0.25
-        ? (reward = '$' + money)
-        : (reward = data[i].screentime);
-
-      res.push([type, reward, data[i].fname]);
-    }
-
-    this.setState({approvalTableData: res});
+    this.setState({approval: data});
   };
 
   toggleChore = () => {
@@ -144,6 +86,7 @@ export class parentHome extends Component {
         },
       })
       .then(response => {
+        console.log(response.data.approval);
         this.tableHandler(response.data.users);
         this.approvalTableHandler(response.data.approval);
         this.choreTableHandler(response.data.chores);
@@ -159,86 +102,42 @@ export class parentHome extends Component {
     return (
       <ScrollView style={styles.container}>
         <Text>Status:</Text>
-        <View style={styles.tableContainer}>
-          <Table borderStyle={styles.tableBorder}>
-            <Row
-              data={this.state.tableHead}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <Rows data={this.state.tableData} textStyle={styles.text} />
-          </Table>
-        </View>
-
+        <ChildButton children={this.state.childs} />
+        <View style={styles.lineStyle} />
         <View>
           <TouchableOpacity onPress={this.toggleChore}>
             <View style={styles.header}>
               <Text style={styles.headerText}>Completed Chores</Text>
             </View>
           </TouchableOpacity>
-
+          <View style={styles.lineStyle} />
           <Collapsible collapsed={this.state.approvalCollapsed} align="center">
-            <View style={styles.content}>
-              <View style={styles.tableContainer}>
-                <Table borderStyle={styles.tableBorder}>
-                  <Row
-                    data={this.state.approvalTableHead}
-                    style={styles.head}
-                    textStyle={styles.text}
-                  />
-                  <Rows
-                    data={this.state.approvalTableData}
-                    textStyle={styles.text}
-                  />
-                </Table>
-              </View>
-            </View>
+            <ItemView data={this.state.approval} type={'chore'} />
           </Collapsible>
         </View>
-
+        <View style={styles.lineStyle} />
         <View>
           <TouchableOpacity onPress={this.toggleAssigned}>
             <View style={styles.header}>
               <Text style={styles.headerText}>Assigned Chores</Text>
             </View>
           </TouchableOpacity>
-
+          <View style={styles.lineStyle} />
           <Collapsible collapsed={this.state.choresCollapsed} align="center">
-            <View style={styles.content}>
-              <View style={styles.tableContainer}>
-                <Table borderStyle={styles.tableBorder}>
-                  <Row
-                    data={this.state.choresHead}
-                    style={styles.head}
-                    textStyle={styles.text}
-                  />
-                  <Rows data={this.state.choresData} textStyle={styles.text} />
-                </Table>
-              </View>
-            </View>
+            <ItemView data={this.state.completed} />
           </Collapsible>
         </View>
-
+        <View style={styles.lineStyle} />
         <View>
           <TouchableOpacity onPress={this.toggleDemerits}>
             <View style={styles.header}>
-              <Text style={styles.headerText}>Demerits</Text>
+              <Text style={styles.headerText}>Penalties</Text>
             </View>
           </TouchableOpacity>
-
+          <View style={styles.lineStyle} />
           <Collapsible collapsed={this.state.demeritCollapsed} align="center">
-            <View style={styles.content}>
-              <View style={styles.tableContainer}>
-                <Table borderStyle={styles.tableBorder}>
-                  <Row
-                    data={this.state.demeritHead}
-                    style={styles.head}
-                    textStyle={styles.text}
-                  />
-                  <Rows data={this.state.demeritData} textStyle={styles.text} />
-                </Table>
-              </View>
-            </View>
+            <Text> put stuff here </Text>
+            <DemeritPenalties data={this.state.demerit} />
           </Collapsible>
         </View>
       </ScrollView>
@@ -256,11 +155,11 @@ const styles = StyleSheet.create({
   input: {
     margin: 15,
     height: 40,
-    borderColor: '#292050',
+    borderColor: '#000000',
     borderWidth: 1,
   },
   submitButton: {
-    backgroundColor: '#292050',
+    backgroundColor: '#000000',
 
     padding: 10,
     margin: 15,
@@ -272,9 +171,9 @@ const styles = StyleSheet.create({
   touchableButton: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#292050',
+    borderColor: '#000000',
     alignItems: 'center',
-    backgroundColor: '#8B82FE',
+    backgroundColor: '#000000',
     paddingTop: 10,
     paddingBottom: 10,
     width: '75%',
@@ -288,11 +187,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     paddingTop: 5,
-    backgroundColor: '#ebebeb',
+    backgroundColor: '#fffbfb',
   },
   head: {height: 40, backgroundColor: '#e0e7ee'},
   text: {margin: 5},
-  tableBorder: {borderWidth: 2, borderColor: '#00bdff'},
+  tableBorder: {borderWidth: 2, borderColor: '#000000'},
   title: {
     textAlign: 'center',
     fontSize: 22,
@@ -300,10 +199,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    backgroundColor: '#F5FCFF',
+    borderWidth: 4,
+    borderRadius: 10,
+    borderColor: '#000000',
     padding: 10,
+    backgroundColor: '#000000',
   },
   headerText: {
+    color: '#fffbfb',
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '500',
@@ -316,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,1)',
   },
   inactive: {
-    backgroundColor: 'rgba(245,252,255,1)',
+    backgroundColor: 'rgb(255,251,251)',
   },
   selectors: {
     marginBottom: 10,
@@ -324,7 +227,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selector: {
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fffbfb',
     padding: 10,
   },
   activeSelector: {
@@ -344,5 +247,9 @@ const styles = StyleSheet.create({
   multipleToggle__title: {
     fontSize: 16,
     marginRight: 8,
+  },
+  lineStyle: {
+    borderWidth: 1,
+    borderColor: '#fff',
   },
 });

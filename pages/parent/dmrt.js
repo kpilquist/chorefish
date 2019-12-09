@@ -189,7 +189,7 @@ const Options = [
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#e3e1e2',
+    backgroundColor: '#fffdfe',
     flex: 1,
     alignItems: 'center',
     paddingTop: 20,
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     left: 330,
     zIndex: 3,
-    backgroundColor: '#e3e3e3',
+    backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center',
   },

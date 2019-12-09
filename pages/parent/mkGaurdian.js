@@ -9,18 +9,14 @@ import {
 import axios from 'axios';
 import '../global';
 
-export class mkChldScreen extends React.Component {
-
+export class mkGaurdScreen extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      First_Name: '',
-      Last_Name: '',
+      name: '',
       email: '',
       password: '',
-      username: '',
-      titleText: '',
       disabled: true,
       pwordError: true,
       emailError: true,
@@ -34,16 +30,9 @@ export class mkChldScreen extends React.Component {
   handlePassword = text => {
     this.setState({password: text});
   };
-  handelFirstName = text => {
-    this.setState({First_Name: text});
-  };
 
-  handelSecondName = text => {
-    this.setState({Last_Name: text});
-  };
-
-  handleuserName = text => {
-    this.setState({username: text});
+  handelName = text => {
+    this.setState({name: text});
   };
 
   enable = () => {
@@ -53,17 +42,15 @@ export class mkChldScreen extends React.Component {
   handelSubmit = () => {
     this.setState({disabled: false});
 
-    const {First_Name, Last_Name, password, email, username} = this.state;
+    const {name, password, email} = this.state;
 
     axios
       .post(
-        global.url + '/api/auth/mkchld',
+        global.url + '/api/auth/mkgaurd',
         {
-          First_Name: First_Name,
-          Last_Name: Last_Name,
+          name: name,
           password: password,
           email: email,
-          username: username,
         },
         {
           headers: {
@@ -75,58 +62,41 @@ export class mkChldScreen extends React.Component {
       )
       .then(response => {
         console.log(response.data);
-        this.setState({titleText: JSON.stringify(response.data.success)});
       })
       .catch(error => {
-        console.log(error.data.error);
-        this.setState({titleText: JSON.stringify(error.data.error)});
+        console.log(error);
         this.enable();
       });
   };
-
   render() {
     return (
       <View style={styles.container}>
-        <Text>Add Child</Text>
+        <Text>Add Gaurdian</Text>
 
-        <Text style={styles.labelText}>First Name</Text>
+        <Text style={styles.labelText}>Display Name</Text>
         <TextInput
           style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
           ]}
           underlineColorAndroid="transparent"
-          placeholder="First Name"
+          placeholder="Display Name"
           placeholderTextColor="#C0C0C0"
           autoCapitalize="none"
-          onChangeText={this.handelFirstName}
+          onChangeText={this.handelName}
           editable={this.state.disabled}
         />
-        <Text style={styles.labelText}>Last Name</Text>
+        <Text style={styles.labelText}>Email</Text>
         <TextInput
           style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
           ]}
           underlineColorAndroid="transparent"
-          placeholder="Last Name"
+          placeholder="Email"
           placeholderTextColor="#C0C0C0"
           autoCapitalize="none"
-          onChangeText={this.handelSecondName}
-          editable={this.state.disabled}
-        />
-        <Text style={styles.labelText}>User Name</Text>
-        <Text style={styles.detail}>No Spaces Allowed</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-          ]}
-          underlineColorAndroid="transparent"
-          placeholder="User Name"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handleuserName}
+          onChangeText={this.handleEmail}
           editable={this.state.disabled}
         />
         <Text style={styles.labelText}>Password</Text>
@@ -143,7 +113,6 @@ export class mkChldScreen extends React.Component {
           onChangeText={this.handlePassword}
           editable={this.state.disabled}
         />
-
         <TouchableOpacity
           style={[
             styles.submitButton,
@@ -152,7 +121,6 @@ export class mkChldScreen extends React.Component {
           onPress={() => this.handelSubmit()}>
           <Text style={styles.submitButtonText}> Submit </Text>
         </TouchableOpacity>
-        <Text>{this.state.titleText}</Text>
       </View>
     );
   }

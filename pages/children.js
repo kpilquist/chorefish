@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export class ChildrenList extends React.Component {
   constructor(props) {
     super(props);
-    this.dataHandler();
+    this.dataHandler().then();
     this.state = {
       children: [],
       selected: '',
@@ -83,10 +83,10 @@ const styles = StyleSheet.create({
   item: {
     alignItems: 'center',
     backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    width: 275,
-    height: 60,
+    padding: 5,
+    marginVertical: 4,
+    width: 200,
+    height: 30,
     borderRadius: 30,
     borderWidth: 1,
     color: '#fff',

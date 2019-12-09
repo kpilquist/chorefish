@@ -25,7 +25,7 @@ export class loadingScreen extends Component {
       .then(response => {
         console.log('Response: ' + response);
         response.data.ischild
-          ? this.props.navigation.navigate('cHome')
+          ? this.props.navigation.navigate('childHome')
           : this.props.navigation.navigate('ParentHome');
         //todo: add logic for email not verified and subscription status
       })

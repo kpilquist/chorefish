@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
-  Switch,
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import axios from 'axios';

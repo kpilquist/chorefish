@@ -12,14 +12,16 @@ import {loader} from './pages/load';
 import logout from './pages/logout';
 import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {accountScreen} from './pages/parent/account';
 import {mkChldScreen} from './pages/parent/mkChld';
 import {mkChoreScreen} from './pages/parent/mkChore';
+import {mkGaurdScreen} from './pages/parent/mkGaurdian';
 import {demeritScreen} from './pages/parent/dmrt';
-
-const childStack = createStackNavigator({
-  cHome: childHome,
-});
+import {Star} from './pages/tools/stars';
+import {newChoreView} from './pages/child/newChore';
+import {piggyBankView} from './pages/child/piggyBank';
 
 const AuthStack = createStackNavigator({
   Home: HomeScreen,
@@ -27,6 +29,88 @@ const AuthStack = createStackNavigator({
   Signup: signUpScreen,
   Logout: logout,
 });
+
+const childStack = createMaterialBottomTabNavigator(
+  {
+    childHome: {
+      screen: childHome,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon style={[{color: tintColor}]} size={25} name={'ios-home'} />
+          </View>
+        ),
+      },
+    },
+    newChore: {
+      screen: newChoreView,
+      navigationOptions: {
+        tabBarLabel: 'Chore',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <IconMaterialCommunityIcons
+              style={[{color: tintColor}]}
+              size={25}
+              name={'broom'}
+            />
+          </View>
+        ),
+      },
+    },
+    newActivity: {
+      screen: logout,
+      navigationOptions: {
+        tabBarLabel: 'Acrivity',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <IconMaterialCommunityIcons
+              style={[{color: tintColor}]}
+              size={25}
+              name={'bike'}
+            />
+          </View>
+        ),
+      },
+    },
+    Logout: {
+      screen: logout,
+      navigationOptions: {
+        tabBarLabel: 'Logout',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <IconFontAwesome5
+              style={[{color: tintColor}]}
+              size={20}
+              name={'gamepad'}
+            />
+          </View>
+        ),
+      },
+    },
+    piggyBank: {
+      screen: piggyBankView,
+      navigationOptions: {
+        tabBarLabel: 'Bank',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <IconFontAwesome5
+              style={[{color: tintColor}]}
+              size={22}
+              name={'piggy-bank'}
+            />
+          </View>
+        ),
+      },
+    },
+  },
+  {
+    initialRouteName: 'childHome',
+    activeColor: '#f0edf6',
+    inactiveColor: '#ff8151',
+    barStyle: {backgroundColor: '#331c57'},
+  },
+);
 
 const parentNav = createMaterialBottomTabNavigator(
   {
@@ -44,7 +128,7 @@ const parentNav = createMaterialBottomTabNavigator(
     Profile: {
       screen: demeritScreen,
       navigationOptions: {
-        tabBarLabel: 'Demerit',
+        tabBarLabel: 'Penalty',
         tabBarIcon: ({tintColor}) => (
           <View>
             <Icon style={[{color: tintColor}]} size={25} name={'ios-nuclear'} />
@@ -53,7 +137,7 @@ const parentNav = createMaterialBottomTabNavigator(
       },
     },
     NewChild: {
-      screen: mkChldScreen,
+      screen: mkGaurdScreen,
       navigationOptions: {
         tabBarLabel: 'New Child',
         tabBarIcon: ({tintColor}) => (
