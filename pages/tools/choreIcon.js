@@ -5,17 +5,31 @@ export class ChoreIcon extends Component {
   render() {
     let Reward;
     if (parseFloat(this.props.allowance) > 0) {
-      Reward = <Text style={styles.mText}>{this.props.allowance}</Text>;
+      Reward = (
+        <Text style={styles.mText}>
+          {this.props.allowance === null ? 'ER' : this.props.allowance}
+        </Text>
+      );
     } else {
-      Reward = <Text style={styles.mText}>{this.props.screenTime}</Text>;
+      Reward = (
+        <Text style={styles.mText}>
+          {this.props.screenTime === null ? 'ER' : this.props.screenTime}
+        </Text>
+      );
     }
 
     return (
       <View style={styles.container}>
         <View style={styles.top}>
-          <Text style={styles.pText}>{this.props.name.substring(0, 2)}</Text>
+          <Text style={styles.pText}>
+            ER
+          </Text>
           <View style={styles.lineStyle} />
-          <Text style={styles.text}>{this.props.fname.substring(0, 2)}</Text>
+          <Text style={styles.text}>
+            {this.props.fname === null
+              ? 'ER'
+              : this.props.fname.substring(0, 2)}
+          </Text>
         </View>
         <View style={styles.lineStyle} />
         {Reward}

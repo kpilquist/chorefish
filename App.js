@@ -38,7 +38,7 @@ const childStack = createMaterialBottomTabNavigator(
         tabBarLabel: 'Home',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-home'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'md-home'} />
           </View>
         ),
       },
@@ -120,33 +120,7 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'Home',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-home'} />
-          </View>
-        ),
-      },
-    },
-    Profile: {
-      screen: demeritScreen,
-      navigationOptions: {
-        tabBarLabel: 'Penalty',
-        tabBarIcon: ({tintColor}) => (
-          <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-nuclear'} />
-          </View>
-        ),
-      },
-    },
-    NewChild: {
-      screen: mkGaurdScreen,
-      navigationOptions: {
-        tabBarLabel: 'New Child',
-        tabBarIcon: ({tintColor}) => (
-          <View>
-            <Icon
-              style={[{color: tintColor}]}
-              size={25}
-              name={'ios-person-add'}
-            />
+            <Icon style={[{color: tintColor}]} size={25} name={'md-home'} />
           </View>
         ),
       },
@@ -157,7 +131,33 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'New Chore',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-compass'} />
+            <Icon style={[{color: tintColor}]} size={25} name={'md-compass'} />
+          </View>
+        ),
+      },
+    },
+    Profile: {
+      screen: demeritScreen,
+      navigationOptions: {
+        tabBarLabel: 'Penalty',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon style={[{color: tintColor}]} size={25} name={'md-nuclear'} />
+          </View>
+        ),
+      },
+    },
+    NewChild: {
+      screen: mkChldScreen,
+      navigationOptions: {
+        tabBarLabel: 'New Child',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <Icon
+              style={[{color: tintColor}]}
+              size={25}
+              name={'md-person-add'}
+            />
           </View>
         ),
       },
@@ -168,11 +168,7 @@ const parentNav = createMaterialBottomTabNavigator(
         tabBarLabel: 'Logout',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <Icon
-              style={[{color: tintColor}]}
-              size={25}
-              name={'ios-settings'}
-            />
+            <Icon style={[{color: tintColor}]} size={25} name={'md-settings'} />
           </View>
         ),
       },

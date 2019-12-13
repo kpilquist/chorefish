@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android Release": "react-native run-android --variant=release",
     "ios 5x": "react-native run-ios --simulator=\"iPhone 5s\"",
     "ios": "react-native run-ios ",
     "ipad": "react-native run-ios --simulator=\"iPad\"",

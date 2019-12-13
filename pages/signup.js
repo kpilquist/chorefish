@@ -60,7 +60,7 @@ export class signUpScreen extends React.Component {
     } else {
       axios
         .post(
-          'http://192.168.1.8:8000/api/auth/signup',
+          global.url + '/api/auth/signup',
           {
             email: email,
             password: password,

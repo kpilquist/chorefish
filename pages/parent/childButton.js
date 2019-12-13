@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, TouchableOpacity, View, Text, FlatList} from 'react-native';
 import {Icon as Icn} from '../tools/iconGenerator';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 export class ChildButton extends Component {
   onSelect = id => {
     console.log('Press: ' + id);
@@ -11,7 +12,7 @@ export class ChildButton extends Component {
       <TouchableOpacity
         style={styles.iconTouch}
         onPress={() => {
-          this.onSelect(item.item.fname);
+          this.onSelect(item.item.uuid);
         }}>
         <View style={styles.container}>
           <View style={styles.iconContainer}>
@@ -24,9 +25,15 @@ export class ChildButton extends Component {
           </View>
 
           <View style={styles.allowance}>
-            <Text style={styles.childSt}>Screen: {item.item.screentime}</Text>
+            <View style={styles.reward}>
+              <Icon name={'tv'} size={15} />
+              <Text style={styles.childSt}>Screen: {item.item.screentime}</Text>
+            </View>
             <View style={styles.lineStyle} />
-            <Text style={styles.childSt}>Bank: ${item.item.allowance}</Text>
+            <View style={styles.reward}>
+              <Icon name={'piggy-bank'} size={15} />
+              <Text style={styles.childSt}>Bank: ${item.item.allowance}</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -34,11 +41,12 @@ export class ChildButton extends Component {
   );
 
   render() {
+    console.log(this.props.children);
     return (
       <FlatList
         data={this.props.children}
         renderItem={item => this.childItem(item)}
-        keyExtractor={item => item.fname}
+        keyExtractor={item => item.uuid}
         extraData={this.props}
       />
     );
@@ -66,22 +74,27 @@ const styles = StyleSheet.create({
   },
   iconTouch: {
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#9c9c9c',
   },
-  screenTime: {color: '#000000'},
+  screenTime: {color: '#07e700'},
   allowance: {
     color: '#000000',
     backgroundColor: '#fffbfb',
     width: '38%',
   },
   childName: {color: '#000000', fontSize: 20},
-  childSt: {color: '#000000', fontSize: 15, paddingVertical: 3},
+  childSt: {
+    color: '#000000',
+    fontSize: 15,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
+  },
   childNameContainer: {
     borderRadius: 10,
     width: '49%',
     alignItems: 'center',
   },
-
+  reward: {flexDirection: 'row'},
   lineStyle: {
     borderWidth: 1,
     borderColor: '#000000',

@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderRadius: 4,
-    marginLeft: 5,
+    paddingRight: 5,
+    marginLeft: 10,
   },
   titleText: {
     fontSize: 18,

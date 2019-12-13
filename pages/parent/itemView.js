@@ -9,6 +9,10 @@ export class ItemView extends Component {
     super(props);
   }
 
+  reList = () => {
+    this.props.update();
+  };
+
   onSelect = data => {
     console.log('Item: ' + data);
   };
@@ -30,10 +34,10 @@ export class ItemView extends Component {
         },
       )
       .then(response => {
-        console.log('ItemView: ' + JSON.stringify(response));
+        this.reList(response);
       })
       .catch(error => {
-        console.log(error.data.error);
+        console.log(error);
       });
   };
 
@@ -102,12 +106,11 @@ export class ItemView extends Component {
   );
 
   render() {
-    //console.log(this.props.data);
     return (
       <FlatList
         data={this.props.data}
         renderItem={item => this.itemItem(item)}
-        keyExtractor={item => item.choreuuid}
+        keyExtractor={item => item.choreUUID}
         extraData={this.props}
       />
     );
@@ -137,9 +140,11 @@ const styles = StyleSheet.create({
     marginVertical: 2,
   },
 
-  iconTouch: {},
+  iconTouch: {
+    height: 75,
+  },
 
-  screenTime: {color: '#000000'},
+  screenTime: {color: '#292050'},
   allowance: {
     flex: 3,
     flexDirection: 'row',
@@ -154,7 +159,7 @@ const styles = StyleSheet.create({
   touch: {
     flex: 1.25,
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#0002e7',
     borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center',
@@ -162,7 +167,7 @@ const styles = StyleSheet.create({
   touchTwo: {
     flex: 1.75,
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#e70001',
     borderRadius: 7,
     marginRight: 5,
     marginLeft: 2,
@@ -171,6 +176,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     backgroundColor: '#fffbfb',
+    justifyContent: 'center',
     alignItems: 'center',
     width: 115,
     borderWidth: 1,

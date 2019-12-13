@@ -127,7 +127,7 @@ export class mkChoreScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView persistentScrollbar={true}>
         <View style={styles.container}>
           <Text style={styles.topLabelText}>Children:</Text>
           <ChildrenList updateParentState={this.updateState.bind(this)} />

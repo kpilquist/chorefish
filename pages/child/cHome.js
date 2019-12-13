@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Icon as ICN} from '../tools/iconGenerator';
 import {ChildChoreView} from './childChore';
@@ -69,30 +69,29 @@ export class childHome extends Component {
     }
     return (
       <View style={styles.container}>
-        <View style={{alignItems: 'center'}}>
-          <ChildHeader text={this.state.fname +'\'s Chorefish'} />
 
-        </View>
-        <View style={styles.name}>
+          <ChildHeader text={this.state.fname + "'s Chorefish"} />
+               <View style={styles.name}>
           <View style={styles.iconContainer}>
             <ICN name={this.state.fname} />
           </View>
-          <View style={styles.screen}>
-            <Icon name={'tv'} size={50} />
-            <View style={{flexDirection: 'column', paddingLeft: 5}}>
-              <Text> Screen: </Text>
-              <Text>
-                {' '}
-                {sign}
-                {this.state.screen}{' '}
-              </Text>
+          <View style={styles.info}>
+            <View style={styles.screen}>
+              <Icon name={'tv'} size={50} />
+              <View style={{flexDirection: 'column', paddingLeft: 5}}>
+                <Text> Screen: </Text>
+                <Text>
+                  {sign}
+                  {this.state.screen}{' '}
+                </Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.bank}>
-            <Icon name={'piggy-bank'} size={50} />
-            <View style={{flexDirection: 'column', paddingLeft: 5}}>
-              <Text> Bank: </Text>
-              <Text> ${this.state.allowance} </Text>
+            <View style={styles.bank}>
+              <Icon name={'piggy-bank'} size={50} />
+              <View style={{flexDirection: 'column', paddingLeft: 5}}>
+                <Text> Bank: </Text>
+                <Text> ${this.state.allowance} </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -140,7 +139,8 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 5,
   },
-  lineStyle:{
-
+  lineStyle: {},
+  info: {
+    flexDirection: 'row',
   },
 });

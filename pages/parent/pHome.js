@@ -2,17 +2,10 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import '../global';
 import {ItemView} from './itemView';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {ChildButton} from './childButton';
 import AsyncStorage from '@react-native-community/async-storage';
-import Collapsible from 'react-native-collapsible';
-import {DemeritPenalties} from '../tools/demerits';
+import {ChildHeader} from '../tools/header';
 export class parentHome extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +22,7 @@ export class parentHome extends Component {
       childs: {},
       completed: {},
       approval: {},
-      demerit: {},
+      timer: false,
     };
   }
 
@@ -45,7 +38,7 @@ export class parentHome extends Component {
     try {
       await AsyncStorage.setItem('@children', data);
     } catch (e) {
-      console.log(e);
+      console.log('pHome saveChildren' + e);
     }
   };
 
@@ -55,11 +48,6 @@ export class parentHome extends Component {
 
   choreTableHandler = data => {
     this.setState({completed: data});
-  };
-
-  demeritTableHandler = data => {
-    console.log(data);
-    this.setState({demerit: data});
   };
 
   approvalTableHandler = data => {
@@ -75,7 +63,9 @@ export class parentHome extends Component {
   toggleDemerits = () => {
     this.setState({demeritCollapsed: !this.state.demeritCollapsed});
   };
-
+  updateGroup = () => {
+    this.getData().then();
+  };
   getData = async () => {
     axios
       .get(global.url + '/api/auth/family', {
@@ -86,11 +76,9 @@ export class parentHome extends Component {
         },
       })
       .then(response => {
-        console.log(response.data.approval);
         this.tableHandler(response.data.users);
         this.approvalTableHandler(response.data.approval);
         this.choreTableHandler(response.data.chores);
-        this.demeritTableHandler(response.data.infractions);
         this.saveChildren(JSON.stringify(response.data.children));
       })
       .catch(error => {
@@ -100,46 +88,33 @@ export class parentHome extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <Text>Status:</Text>
+      <ScrollView persistentScrollbar={true} style={styles.container}>
+        <ChildHeader text={'Chore Fish'} />
+        <View style={styles.lineStyle} />
         <ChildButton children={this.state.childs} />
         <View style={styles.lineStyle} />
         <View>
-          <TouchableOpacity onPress={this.toggleChore}>
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Completed Chores</Text>
-            </View>
-          </TouchableOpacity>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Completed Chores</Text>
+          </View>
+
           <View style={styles.lineStyle} />
-          <Collapsible collapsed={this.state.approvalCollapsed} align="center">
-            <ItemView data={this.state.approval} type={'chore'} />
-          </Collapsible>
+
+          <ItemView
+            update={this.updateGroup}
+            data={this.state.approval}
+            type={'chore'}
+          />
         </View>
         <View style={styles.lineStyle} />
         <View>
-          <TouchableOpacity onPress={this.toggleAssigned}>
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Assigned Chores</Text>
-            </View>
-          </TouchableOpacity>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Assigned Chores</Text>
+          </View>
           <View style={styles.lineStyle} />
-          <Collapsible collapsed={this.state.choresCollapsed} align="center">
-            <ItemView data={this.state.completed} />
-          </Collapsible>
+          <ItemView update={this.updateGroup} data={this.state.completed} />
         </View>
-        <View style={styles.lineStyle} />
-        <View>
-          <TouchableOpacity onPress={this.toggleDemerits}>
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Penalties</Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.lineStyle} />
-          <Collapsible collapsed={this.state.demeritCollapsed} align="center">
-            <Text> put stuff here </Text>
-            <DemeritPenalties data={this.state.demerit} />
-          </Collapsible>
-        </View>
+        <View style={styles.footer} />
       </ScrollView>
     );
   }
@@ -148,6 +123,7 @@ export class parentHome extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 23,
+      backgroundColor: '#fffdfe',
   },
   view: {
     alignItems: 'center',
@@ -155,7 +131,7 @@ const styles = StyleSheet.create({
   input: {
     margin: 15,
     height: 40,
-    borderColor: '#000000',
+    borderColor: '#292050',
     borderWidth: 1,
   },
   submitButton: {
@@ -166,14 +142,14 @@ const styles = StyleSheet.create({
     height: 40,
   },
   submitButtonText: {
-    color: 'white',
+    color: '#fff',
   },
   touchableButton: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#292050',
     alignItems: 'center',
-    backgroundColor: '#000000',
+    backgroundColor: '#292050',
     paddingTop: 10,
     paddingBottom: 10,
     width: '75%',
@@ -202,8 +178,9 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 10,
     borderColor: '#000000',
-    padding: 10,
-    backgroundColor: '#000000',
+    marginVertical: 5,
+    marginHorizontal: 2,
+    backgroundColor: '#292050',
   },
   headerText: {
     color: '#fffbfb',
@@ -250,6 +227,9 @@ const styles = StyleSheet.create({
   },
   lineStyle: {
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: '#000285',
+  },
+  footer: {
+    marginVertical: 50,
   },
 });

@@ -5,12 +5,15 @@ export class ChildHeader extends Component {
   render() {
     return (
       <View style={styles.container}>
-
-        <Image
-          source={require('../../img/CF_Alpha_NT.jpg')}
-          style={styles.mainImg}
-        />
-        <Text>{this.props.text}</Text>
+        <View style={styles.img}>
+          <Image
+            source={require('../../img/CF_Alpha_NT.jpg')}
+            style={styles.mainImg}
+          />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{this.props.text}</Text>
+        </View>
       </View>
     );
   }
@@ -18,11 +21,19 @@ export class ChildHeader extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingTop: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   mainImg: {
-    width: 50,
-    height: 50,
+    height: 40,
+    width: 40,
+  },
+  text: {
+  },
+  textContainer: {
   },
 });
