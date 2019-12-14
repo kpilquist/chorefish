@@ -41,9 +41,7 @@ export class signUpScreen extends React.Component {
 
   enable = () => {
     this.setState({disabled: true});
-
   };
-
 
   handlePword = () => {
     this.setState({pwordError: false});
