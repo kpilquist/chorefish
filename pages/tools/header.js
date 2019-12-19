@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {Image, Text, View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class ChildHeader extends Component {
   render() {
@@ -7,8 +8,8 @@ export class ChildHeader extends Component {
       <View style={styles.container}>
         <View style={styles.img}>
           <Image
-            source={require('../../img/CF_Alpha_NT.jpg')}
-            style={styles.mainImg}
+              source={require('../../img/CF_Alpha_NT_grey.jpg')}
+              style={styles.mainImg}
           />
         </View>
         <View style={styles.textContainer}>
@@ -19,14 +20,14 @@ export class ChildHeader extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 2,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
+      paddingVertical: '.13rem',
   },
   mainImg: {
     height: 40,
@@ -36,4 +37,8 @@ const styles = StyleSheet.create({
   },
   textContainer: {
   },
+    lineStyle: {
+        borderWidth: 3,
+        borderColor: '#000285',
+    },
 });

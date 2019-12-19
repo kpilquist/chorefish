@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import axios from 'axios';
 import '../global';
 
@@ -71,8 +65,6 @@ export class mkGaurdScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Add Gaurdian</Text>
-
         <Text style={styles.labelText}>Display Name</Text>
         <TextInput
           style={[

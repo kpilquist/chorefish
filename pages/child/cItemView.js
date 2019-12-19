@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TouchableOpacity, View, Text, FlatList} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ChoreIcon} from '../tools/choreIcon';
 import axios from 'axios';
 import '../global';
@@ -64,19 +64,19 @@ export class ChildChoreView extends Component {
         </Text>
       </View>
 
-      <View style={styles.rButton}>
         {item.item.complete ? (
+            <View style={styles.rButton}>
           <Text>Awaiting Approval</Text>
+            </View>
         ) : (
-          <TouchableOpacity
-            style={styles.iconTouch}
-            onPress={() => {
-              this.onSelect(item.item.uuid);
-            }}>
-            <Text> Complete </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.touch}
+                onPress={() => {
+                    this.onSelect(item.item.uuid);
+                }}>
+                <Text> Complete </Text>
+            </TouchableOpacity>
         )}
-      </View>
     </View>
   );
 
@@ -137,4 +137,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
   },
+    touch: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: '#1600e7',
+        borderRadius: 7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10,
+    },
 });

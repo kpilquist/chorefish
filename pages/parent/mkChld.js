@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import axios from 'axios';
 import '../global';
 
@@ -87,8 +81,6 @@ export class mkChldScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Add Child</Text>
-
         <Text style={styles.labelText}>First Name</Text>
         <TextInput
           style={[
@@ -100,19 +92,6 @@ export class mkChldScreen extends React.Component {
           placeholderTextColor="#C0C0C0"
           autoCapitalize="none"
           onChangeText={this.handelFirstName}
-          editable={this.state.disabled}
-        />
-        <Text style={styles.labelText}>Last Name</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
-          ]}
-          underlineColorAndroid="transparent"
-          placeholder="Last Name"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handelSecondName}
           editable={this.state.disabled}
         />
         <Text style={styles.labelText}>User Name</Text>

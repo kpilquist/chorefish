@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import '../global';
 import {ItemView} from './itemView';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import {ChildButton} from './childButton';
 import AsyncStorage from '@react-native-community/async-storage';
 import {ChildHeader} from '../tools/header';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
 export class parentHome extends Component {
   constructor(props) {
     super(props);
@@ -80,6 +82,7 @@ export class parentHome extends Component {
         this.approvalTableHandler(response.data.approval);
         this.choreTableHandler(response.data.chores);
         this.saveChildren(JSON.stringify(response.data.children));
+        console.log('pHome 85: ' + JSON.stringify(response.data.chores));
       })
       .catch(error => {
         console.log(error);
@@ -88,148 +91,74 @@ export class parentHome extends Component {
 
   render() {
     return (
-      <ScrollView persistentScrollbar={true} style={styles.container}>
-        <ChildHeader text={'Chore Fish'} />
-        <View style={styles.lineStyle} />
-        <ChildButton children={this.state.childs} />
-        <View style={styles.lineStyle} />
-        <View>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Completed Chores</Text>
+        <View style={styles.outer}>
+          <View style={styles.header1}>
+            <ChildHeader text={'Chore Fish'}/>
           </View>
-
-          <View style={styles.lineStyle} />
-
-          <ItemView
-            update={this.updateGroup}
-            data={this.state.approval}
-            type={'chore'}
-          />
+          <View style={styles.lineStyle}/>
+          <ScrollView persistentScrollbar={true}>
+            <View style={styles.lineStyle}/>
+            <ChildButton children={this.state.childs}/>
+            <View style={styles.lineStyle}/>
+            <View>
+              <View style={styles.header}>
+                <Text style={styles.headerText}>Completed Chores</Text>
+              </View>
+              <View style={styles.lineStyle}/>
+              <ItemView
+                  update={this.updateGroup}
+                  data={this.state.approval}
+                  type={'chore'}
+              />
+            </View>
+            <View style={styles.lineStyle}/>
+            <View>
+              <View style={styles.header}>
+                <Text style={styles.headerText}>Assigned Chores</Text>
+              </View>
+              <View style={styles.lineStyle}/>
+              <ItemView update={this.updateGroup} data={this.state.completed}/>
+            </View>
+            <View style={styles.footer}/>
+          </ScrollView>
         </View>
-        <View style={styles.lineStyle} />
-        <View>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Assigned Chores</Text>
-          </View>
-          <View style={styles.lineStyle} />
-          <ItemView update={this.updateGroup} data={this.state.completed} />
-        </View>
-        <View style={styles.footer} />
-      </ScrollView>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
+  outer: {
+    flexDirection: 'column',
+    backgroundColor: '#e3e1e2',
+  },
+  header1: {
+    paddingTop: '1rem',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
   container: {
-    paddingTop: 23,
-      backgroundColor: '#fffdfe',
-  },
-  view: {
-    alignItems: 'center',
-  },
-  input: {
-    margin: 15,
-    height: 40,
-    borderColor: '#292050',
-    borderWidth: 1,
-  },
-  submitButton: {
-    backgroundColor: '#000000',
-
-    padding: 10,
-    margin: 15,
-    height: 40,
-  },
-  submitButtonText: {
-    color: '#fff',
-  },
-  touchableButton: {
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#292050',
-    alignItems: 'center',
-    backgroundColor: '#292050',
-    paddingTop: 10,
-    paddingBottom: 10,
-    width: '75%',
-  },
-
-  touchableText: {
-    fontSize: 20,
-    color: '#fff',
-  },
-  tableContainer: {
-    flex: 1,
-    padding: 10,
-    paddingTop: 5,
-    backgroundColor: '#fffbfb',
-  },
-  head: {height: 40, backgroundColor: '#e0e7ee'},
-  text: {margin: 5},
-  tableBorder: {borderWidth: 2, borderColor: '#000000'},
-  title: {
-    textAlign: 'center',
-    fontSize: 22,
-    fontWeight: '300',
-    marginBottom: 20,
-  },
-  header: {
-    borderWidth: 4,
-    borderRadius: 10,
-    borderColor: '#000000',
-    marginVertical: 5,
-    marginHorizontal: 2,
-    backgroundColor: '#292050',
-  },
-  headerText: {
-    color: '#fffbfb',
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  content: {
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  active: {
-    backgroundColor: 'rgba(255,255,255,1)',
-  },
-  inactive: {
-    backgroundColor: 'rgb(255,251,251)',
-  },
-  selectors: {
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  selector: {
-    backgroundColor: '#fffbfb',
-    padding: 10,
-  },
-  activeSelector: {
-    fontWeight: 'bold',
-  },
-  selectTitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    padding: 10,
-  },
-  multipleToggle: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 30,
-    alignItems: 'center',
-  },
-  multipleToggle__title: {
-    fontSize: 16,
-    marginRight: 8,
+    backgroundColor: '#e3e1e2',
   },
   lineStyle: {
     borderWidth: 1,
     borderColor: '#000285',
   },
+  header: {
+    borderWidth: 4,
+    borderRadius: 10,
+    borderColor: '#000000',
+    marginVertical: '.25rem',
+    marginHorizontal: '.065rem',
+    backgroundColor: '#292050',
+  },
+  headerText: {
+    color: '#fffbfb',
+    textAlign: 'center',
+    fontSize: '.9rem',
+    fontWeight: '500',
+  },
   footer: {
-    marginVertical: 50,
+    marginVertical: '2.5rem',
   },
 });

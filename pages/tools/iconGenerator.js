@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {View, ActivityIndicator, StatusBar, StyleSheet,Text} from 'react-native';
+import {Text, View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 
 export class Icon extends Component {
@@ -14,23 +15,23 @@ export class Icon extends Component {
     }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
 
     container: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        //backgroundColor: '#292050',
-        backgroundColor: '#fffbfb',
-        width:50,
+        backgroundColor: '#292050',
+        //backgroundColor: '#fffbfb',
+        width: '2.9rem',
         borderWidth:2,
         borderRadius: 5,
     },
     text:{
         alignSelf: 'center',
-        //color:'#ff6900',
-        color:'#000000',
-        fontSize:30,
+        color: '#ff6900',
+        //color:'#000000',
+        fontSize: '2rem',
     },
 });

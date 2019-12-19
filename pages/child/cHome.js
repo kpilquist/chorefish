@@ -3,7 +3,7 @@ import axios from 'axios';
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Icon as ICN} from '../tools/iconGenerator';
-import {ChildChoreView} from './childChore';
+import {ChildChoreView} from './cItemView';
 import {ChildHeader} from '../tools/header';
 
 export class childHome extends Component {
@@ -69,8 +69,9 @@ export class childHome extends Component {
     }
     return (
       <View style={styles.container}>
-
+          <View style={styles.header1}>
           <ChildHeader text={this.state.fname + "'s Chorefish"} />
+          </View>
                <View style={styles.name}>
           <View style={styles.iconContainer}>
             <ICN name={this.state.fname} />
@@ -143,4 +144,21 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: 'row',
   },
+    header1: {
+        paddingTop: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    iconTouch: {
+        flex: 1,
+    },
+    touch: {
+        flex: 1.25,
+        borderWidth: 1,
+        borderColor: '#1600e7',
+        borderRadius: 7,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

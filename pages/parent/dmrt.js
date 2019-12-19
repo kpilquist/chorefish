@@ -1,17 +1,11 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
+import {ScrollView, Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import axios from 'axios';
 import '../global';
 import SwitchSelector from 'react-native-switch-selector';
 import {ChildrenList} from '../children';
+import {ChildHeader} from '../tools/header';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class demeritScreen extends React.Component {
   constructor(props) {
@@ -77,7 +71,11 @@ export class demeritScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.outter}>
+        <View style={styles.outer}>
+          <View style={styles.header1}>
+            <ChildHeader text={'Penalty'}/>
+          </View>
+          <View style={styles.lineStyle}/>
         <ScrollView showsVerticalScrollIndicator={true}>
           <View style={styles.container}>
             <ChildrenList updateParentState={this.updateState.bind(this)} />
@@ -200,148 +198,78 @@ const Options = [
   {label: 'Allowance', value: false},
 ];
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 20,
+    backgroundColor: '#e3e1e2',
   },
-  input: {
-    borderRadius: 10,
-    margin: 15,
-    marginTop: 1,
-    height: 40,
-    borderColor: '#7a42f4',
+  lineStyle: {
     borderWidth: 1,
-    width: '75%',
+    borderColor: '#000285',
   },
   submitButton: {
-    borderRadius: 10,
+    borderRadius: 5,
     borderWidth: 1,
     borderColor: '#292050',
     alignItems: 'center',
-    padding: 10,
-    margin: 15,
-    height: 40,
-    width: '75%',
+    justifyContent: 'center',
+    margin: '1.4rem',
+    height: '2.5rem',
+    width: '16rem',
   },
   submitButtonText: {
     color: '#fff',
   },
   labelText: {
-    paddingTop: 10,
+    paddingTop: '.5rem',
   },
-  detail: {
-    fontSize: 8,
-  },
+
   timeContainer: {
     flexDirection: 'row',
   },
   labelContainer: {
     alignItems: 'center',
-    paddingHorizontal: 25,
   },
   timeInput: {
-    borderRadius: 10,
-    margin: 15,
-    marginTop: 1,
-    height: 40,
+    borderRadius: 5,
+    margin: '1.75rem',
+    marginTop: '.1rem',
+    height: '2rem',
     borderColor: '#7a42f4',
     borderWidth: 1,
-    width: 75,
+    width: '4.7rem',
   },
   moneyInput: {
-    borderRadius: 10,
-    marginHorizontal: 15,
-    marginBottom: 15,
-    height: 40,
+    borderRadius: 5,
+    marginHorizontal: '1.4rem',
+    marginBottom: '1.4rem',
+    height: '2rem',
     borderColor: '#7a42f4',
     borderWidth: 1,
-    width: 200,
-  },
-  h2text: {
-    marginTop: 10,
-    fontFamily: 'Helvetica',
-    fontSize: 36,
-    fontWeight: 'bold',
-  },
-  flatview: {
-    justifyContent: 'center',
-    paddingTop: 30,
-    borderRadius: 2,
-  },
-  name: {
-    fontFamily: 'Verdana',
-    fontSize: 18,
-  },
-  title: {
-    fontSize: 20,
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  list: {
-    paddingVertical: 5,
-    margin: 3,
-    flexDirection: 'row',
-    backgroundColor: '#192338',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    zIndex: -1,
-  },
-  lightText: {
-    color: '#f7f7f7',
-    width: 200,
-    paddingLeft: 15,
-    fontSize: 12,
-  },
-  line: {
-    height: 0.5,
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,0.5)',
-  },
-  icon: {
-    position: 'absolute',
-    bottom: 20,
-    width: '100%',
-    left: 290,
-    zIndex: 1,
-  },
-  numberBox: {
-    position: 'absolute',
-    bottom: 75,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    left: 330,
-    zIndex: 3,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '14rem',
   },
   sw1: {
-    margin: 15,
-    marginTop: 5,
-    width: '90%',
+    margin: '1.4rem',
+    marginTop: '.14rem',
+    width: '16rem',
   },
-  number: {fontSize: 14, color: '#000'},
-  selected: {backgroundColor: '#FA7B5F'},
   inputBox: {
-    borderRadius: 10,
-    marginHorizontal: 15,
-    height: 60,
+    borderRadius: 5,
+    marginHorizontal: '1.4rem',
+    height: '4rem',
     borderColor: '#7a42f4',
     borderWidth: 1,
-    width: 230,
+    width: '16rem',
   },
-  outter: {
+  outer: {
     flex: 1,
-    backgroundColor: '#fffdfe',
+    backgroundColor: '#e3e1e2',
+  },
+  header1: {
+    paddingTop: '1.4rem',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });

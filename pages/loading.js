@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ActivityIndicator, StatusBar, StyleSheet} from 'react-native';
+import {ActivityIndicator, StatusBar, StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import './global';
@@ -23,7 +23,6 @@ export class loadingScreen extends Component {
         },
       })
       .then(response => {
-        console.log('Response: ' + response);
         response.data.ischild
           ? this.props.navigation.navigate('childHome')
           : this.props.navigation.navigate('ParentHome');
@@ -31,7 +30,7 @@ export class loadingScreen extends Component {
       })
       .catch(error => {
         console.log(error);
-        this.props.navigation.navigate('Home');g
+          this.props.navigation.navigate('Home');
       });
   };
 

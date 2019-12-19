@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, TouchableOpacity, View, Text, FlatList} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {ChoreIcon} from '../tools/choreIcon';
 import axios from 'axios';
 import '../global';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class ItemView extends Component {
   constructor(props) {
@@ -50,17 +51,22 @@ export class ItemView extends Component {
       <View style={styles.container}>
         <View style={styles.iconContainer}>
           <ChoreIcon
-            allowance={item.item.moneyValue}
-            screenTime={item.item.screentime}
-            name={item.item.name}
-            fname={item.item.fname}
-            type={item.item.isMoney}
-            act={item.item.type}
+              allowance={item.item.moneyValue}
+              screenTime={item.item.screentime}
+              name={item.item.name}
+              fname={item.item.fname}
+              type={item.item.isMoney}
+              act={item.item.type}
+              bg={'#e3e1e2'}
           />
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>{item.item.name}</Text>
+          <Text style={styles.titleText}>
+            {item.item.name.length > 14
+                ? item.item.name.substring(0, 13) + '...'
+                : item.item.name}
+          </Text>
           <Text style={styles.titleText}>{item.item.fname}</Text>
         </View>
 
@@ -71,15 +77,15 @@ export class ItemView extends Component {
               onPress={() => {
                 this.sendData(item.item.uuid, 'reject');
               }}>
-              <Text style={styles.childSt}>Reject</Text>
+              <Text style={styles.touchText}>Try Again</Text>
             </TouchableOpacity>
             <View style={styles.lineStyle} />
             <TouchableOpacity
-              style={styles.touch}
-              onPress={() => {
+                style={styles.touchTwo}
+                onPress={() => {
                 this.sendData(item.item.uuid, 'approve');
               }}>
-              <Text style={styles.childSt}>Approve</Text>
+              <Text style={styles.touchTextTwo}>Approve</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -89,7 +95,7 @@ export class ItemView extends Component {
               onPress={() => {
                 this.sendData(item.item.choreuuid, 'delete');
               }}>
-              <Text style={styles.childSt}>Delete</Text>
+              <Text style={styles.touchText}>Delete</Text>
             </TouchableOpacity>
             <View style={styles.lineStyle} />
             <TouchableOpacity
@@ -97,7 +103,7 @@ export class ItemView extends Component {
               onPress={() => {
                 this.sendData(item.item.choreuuid, 'complete');
               }}>
-              <Text style={styles.childSt}>Complete</Text>
+              <Text style={styles.touchTextTwo}>Complete</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -117,72 +123,75 @@ export class ItemView extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#fffbfb',
-    paddingVertical: 5,
-    marginVertical: 5,
-    marginHorizontal: 2,
-    borderWidth: 2,
-  },
+    alignItems: 'center',
+    justifyContent: 'center',
 
-  component: {
-    flex: 1,
-    width: 100,
-    height: 100,
+    marginVertical: '.2rem',
+    marginHorizontal: '.2rem',
+    borderWidth: 1,
+    borderRadius: 4,
   },
-
   iconContainer: {
-    height: 50,
-    marginHorizontal: 5,
-    marginVertical: 2,
+    height: '2.8rem',
+    marginHorizontal: '.2rem',
+    backgroundColor: '#fffbfb',
   },
 
   iconTouch: {
-    height: 75,
+    height: '4rem',
   },
 
   screenTime: {color: '#292050'},
   allowance: {
     flex: 3,
     flexDirection: 'row',
-    marginHorizontal: 5,
-  },
-  titleText: {color: '#000000', fontSize: 18},
-  childSt: {
-    color: '#000000',
-    paddingVertical: 3,
-    paddingHorizontal: 10,
-  },
-  touch: {
-    flex: 1.25,
-    borderWidth: 1,
-    borderColor: '#0002e7',
-    borderRadius: 7,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  touchTwo: {
-    flex: 1.75,
-    borderWidth: 1,
-    borderColor: '#e70001',
-    borderRadius: 7,
-    marginRight: 5,
-    marginLeft: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginHorizontal: '.28rem',
   },
   titleContainer: {
     backgroundColor: '#fffbfb',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 115,
+    width: '7rem',
+    height: '2.8rem',
     borderWidth: 1,
     borderRadius: 4,
   },
-
+  titleText: {color: '#000000', fontSize: '.75rem'},
+  childSt: {
+    color: '#000000',
+    paddingVertical: '.8rem',
+    paddingHorizontal: '.8rem',
+  },
+  touch: {
+    flex: 1.25,
+    borderWidth: 1,
+    borderColor: '#e7001f',
+    backgroundColor: '#fff',
+    borderRadius: 7,
+    height: '2.8rem',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  touchText: {
+    fontSize: '.7rem',
+  },
+  touchTwo: {
+    flex: 1.75,
+    borderWidth: 1,
+    borderColor: '#2100ff',
+    backgroundColor: '#fff',
+    borderRadius: 7,
+    height: '2.8rem',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  touchTextTwo: {
+    fontSize: '.7rem',
+  },
   lineStyle: {
     borderWidth: 1,
     borderColor: '#fffbfb',

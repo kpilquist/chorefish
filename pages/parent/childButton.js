@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, TouchableOpacity, View, Text, FlatList} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {Icon as Icn} from '../tools/iconGenerator';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
 export class ChildButton extends Component {
   onSelect = id => {
     console.log('Press: ' + id);
@@ -41,7 +43,6 @@ export class ChildButton extends Component {
   );
 
   render() {
-    console.log(this.props.children);
     return (
       <FlatList
         data={this.props.children}
@@ -53,24 +54,18 @@ export class ChildButton extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    height: 50,
-    marginVertical: 3,
+    height: '2.8rem',
+    marginVertical: '.15rem',
     flexDirection: 'row',
+    backgroundColor: '#e3e1e2',
   },
-
-  component: {
-    flex: 1,
-    width: 100,
-    height: 100,
-  },
-
   iconContainer: {
-    width: 50,
-    height: 50,
-    paddingLeft: 2,
+    width: '2.8rem',
+    height: '2.8rem',
+    paddingLeft: '.1rem',
   },
   iconTouch: {
     borderWidth: 1,
@@ -79,19 +74,19 @@ const styles = StyleSheet.create({
   screenTime: {color: '#07e700'},
   allowance: {
     color: '#000000',
-    backgroundColor: '#fffbfb',
-    width: '38%',
+    backgroundColor: '#e3e1e2',
+    width: '10rem',
   },
-  childName: {color: '#000000', fontSize: 20},
+  childName: {color: '#000000', fontSize: '1rem'},
   childSt: {
     color: '#000000',
-    fontSize: 15,
-    paddingVertical: 3,
-    paddingHorizontal: 5,
+    fontSize: '.8rem',
+    paddingVertical: '.2rem',
+    paddingHorizontal: '.3rem',
   },
   childNameContainer: {
     borderRadius: 10,
-    width: '49%',
+    width: '10rem',
     alignItems: 'center',
   },
   reward: {flexDirection: 'row'},

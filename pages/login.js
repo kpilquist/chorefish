@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './global';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class LoginScreen extends Component {
   constructor(props) {
@@ -69,24 +63,27 @@ export class LoginScreen extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.container}>Login</Text>
+        <ScrollView>
+          <View styles={styles.container}>
+            <Text>Login</Text>
+          </View>
         <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="Email"
-          placeholderTextColor="#9a73ef"
-          autoCapitalize="none"
-          onChangeText={this.handleEmail}
+            style={styles.input}
+            underlineColorAndroid={'transparent'}
+            placeholder={'Email or User Name'}
+            placeholderTextColor={'#9a73ef'}
+            autoCapitalize={'none'}
+            onChangeText={this.handleEmail}
         />
 
         <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="Password"
-          placeholderTextColor="#9a73ef"
-          autoCapitalize="none"
-          onChangeText={this.handlePassword}
+            style={styles.input}
+            secureTextEntry={true}
+            underlineColorAndroid={'transparent'}
+            placeholder={'Password'}
+            placeholderTextColor={'#9a73ef'}
+            autoCapitalize={'none'}
+            onChangeText={this.handlePassword}
         />
         <View style={styles.container} />
 
@@ -102,21 +99,25 @@ export class LoginScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
-    paddingTop: 23,
+    paddingTop: '1rem',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
-    margin: 15,
-    height: 40,
+    margin: '1.5rem',
+    height: '2.2rem',
     borderColor: '#7a42f4',
     borderWidth: 1,
+    borderRadius: 4,
   },
   submitButton: {
     backgroundColor: '#7a42f4',
-    padding: 10,
-    margin: 15,
-    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '1.5rem',
+    height: '2.2rem',
   },
   submitButtonText: {
     color: 'white',

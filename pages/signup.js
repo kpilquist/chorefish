@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import axios from 'axios';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class signUpScreen extends React.Component {
   constructor(props) {
@@ -84,7 +79,7 @@ export class signUpScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center'}}>
+        <View style={styles.container}>
         <Text>Sign Up</Text>
         <TextInput
           style={[
@@ -115,33 +110,35 @@ export class signUpScreen extends React.Component {
         />
 
         <TextInput
-          style={[
+            style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
             {borderColor: this.state.pwordError ? '#7a42f4' : '#dc0019'},
             {borderWidth: this.state.pwordError ? 1 : 2},
           ]}
-          underlineColorAndroid="transparent"
-          placeholder="Password"
-          placeholderTextColor="#9a73ef"
-          autoCapitalize="none"
-          onChangeText={this.handlePassword}
-          editable={this.state.disabled}
+            underlineColorAndroid={'transparent'}
+            placeholder={'Password'}
+            placeholderTextColor={'#9a73ef'}
+            autoCapitalize={'none'}
+            secureTextEntry={true}
+            onChangeText={this.handlePassword}
+            editable={this.state.disabled}
         />
 
         <TextInput
-          style={[
+            style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
             {borderColor: this.state.pwordError ? '#7a42f4' : '#dc0019'},
             {borderWidth: this.state.pwordError ? 1 : 2},
           ]}
-          underlineColorAndroid="transparent"
-          placeholder="Re-enter Password"
-          placeholderTextColor="#9a73ef"
-          autoCapitalize="none"
-          onChangeText={this.handleConf}
-          editable={this.state.disabled}
+            underlineColorAndroid={'transparent'}
+            placeholder={'Re-enter Password'}
+            placeholderTextColor={'#9a73ef'}
+            autoCapitalize={'none'}
+            secureTextEntry={true}
+            onChangeText={this.handleConf}
+            editable={this.state.disabled}
         />
 
         <TouchableOpacity
@@ -158,22 +155,24 @@ export class signUpScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
-    paddingTop: 23,
+      flex: 1,
+      alignItems: 'center',
   },
   input: {
-    margin: 15,
-    height: 40,
+      margin: '1rem',
+      height: '2.2rem',
+      borderRadius: 4,
     borderColor: '#7a42f4',
     borderWidth: 1,
-    width: '75%',
+      width: '16rem',
   },
   submitButton: {
-    padding: 10,
-    margin: 15,
-    height: 40,
-    width: '75%',
+      height: '2.2rem',
+      width: '16rem',
+      alignItems: 'center',
+      justifyContent: 'center',
   },
   submitButtonText: {
     color: 'white',

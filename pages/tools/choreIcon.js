@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {Text, View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class ChoreIcon extends Component {
   render() {
@@ -24,38 +25,37 @@ export class ChoreIcon extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fffbfb',
-    width: 50,
+    width: '2.9rem',
     borderWidth: 2,
-    borderColor: '#000000',
-    borderRadius: 5,
+    borderColor: '#736e76',
+    borderRadius: 4,
+    backgroundColor: '#292050',
   },
   top: {
     flexDirection: 'row',
   },
   text: {
     alignSelf: 'center',
-    color: '#000000',
-    fontSize: 15,
-    paddingHorizontal: 2,
+    color: '#ff6900',
+    fontSize: '.9rem',
+    paddingHorizontal: '.1rem',
   },
   mText: {
     alignSelf: 'center',
-    color: '#000000',
-    fontSize: 15,
+    color: '#ff6900',
+    fontSize: '.9rem',
   },
   pText: {
-    paddingHorizontal: 2.5,
-    alignSelf: 'center',
-    color: '#000000',
-    fontSize: 15,
+    paddingHorizontal: '.1rem',
+    color: '#ff6900',
+    fontSize: '.9rem',
   },
   lineStyle: {
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#6d6d6d',
   },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {FlatList, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class ChildrenList extends React.Component {
   constructor(props) {
@@ -74,25 +75,24 @@ export class ChildrenList extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: '.2rem',
   },
   item: {
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#f9c2ff',
-    padding: 5,
-    marginVertical: 4,
-    width: 200,
-    height: 30,
-    borderRadius: 30,
+    marginVertical: '.5rem',
+    height: '3rem',
+    borderRadius: 10,
     borderWidth: 1,
     color: '#fff',
+    width: '16rem',
   },
   title: {
-    fontSize: 15,
+    fontSize: '1.5rem',
     color: '#fff',
   },
 });

@@ -1,6 +1,7 @@
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
-import {createStackNavigator} from 'react-navigation-stack';
+import {createStackNavigator, HeaderBackButton} from 'react-navigation-stack';
+
 import React from 'react';
 import {LoginScreen} from './pages/login';
 import {signUpScreen} from './pages/signup';
@@ -10,7 +11,7 @@ import {loadingScreen} from './pages/loading';
 import {HomeScreen} from './pages/appHome';
 import {loader} from './pages/load';
 import logout from './pages/logout';
-import {View} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,9 +20,16 @@ import {mkChldScreen} from './pages/parent/mkChld';
 import {mkChoreScreen} from './pages/parent/mkChore';
 import {mkGaurdScreen} from './pages/parent/mkGaurdian';
 import {demeritScreen} from './pages/parent/dmrt';
-import {Star} from './pages/tools/stars';
 import {newChoreView} from './pages/child/newChore';
 import {piggyBankView} from './pages/child/piggyBank';
+import settingsView from './pages/parent/settings';
+import newActivityView from './pages/child/childActivity';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+let {height, width} = Dimensions.get('window');
+EStyleSheet.build({
+    $rem: width > 340 ? 18 : 16,
+});
 
 const AuthStack = createStackNavigator({
   Home: HomeScreen,
@@ -59,9 +67,9 @@ const childStack = createMaterialBottomTabNavigator(
       },
     },
     newActivity: {
-      screen: logout,
+        screen: newActivityView,
       navigationOptions: {
-        tabBarLabel: 'Acrivity',
+          tabBarLabel: 'Activity',
         tabBarIcon: ({tintColor}) => (
           <View>
             <IconMaterialCommunityIcons
@@ -147,25 +155,11 @@ const parentNav = createMaterialBottomTabNavigator(
         ),
       },
     },
-    NewChild: {
-      screen: mkChldScreen,
+      Settings: {
+          screen: settingsView,
+          key: 'settings',
       navigationOptions: {
-        tabBarLabel: 'New Child',
-        tabBarIcon: ({tintColor}) => (
-          <View>
-            <Icon
-              style={[{color: tintColor}]}
-              size={25}
-              name={'md-person-add'}
-            />
-          </View>
-        ),
-      },
-    },
-    Logout: {
-      screen: logout,
-      navigationOptions: {
-        tabBarLabel: 'Logout',
+          tabBarLabel: 'Settings',
         tabBarIcon: ({tintColor}) => (
           <View>
             <Icon style={[{color: tintColor}]} size={25} name={'md-settings'} />
@@ -182,6 +176,42 @@ const parentNav = createMaterialBottomTabNavigator(
   },
 );
 
+const SettingsStack = createStackNavigator({
+    mkChild: {
+        screen: mkChldScreen,
+        navigationOptions: ({navigation}) => ({
+            //don't forget parentheses around the object notation
+            title: 'New Child',
+            headerMode: 'none',
+            headerLeft: (
+                <HeaderBackButton
+                    onPress={() => {
+                        navigation.navigate('Settings');
+                    }}
+                />
+            ),
+        }),
+    },
+    mkGaurd: {
+        screen: mkGaurdScreen,
+        navigationOptions: ({navigation}) => ({
+            //don't forget parentheses around the object notation
+            title: 'New Gaurdian',
+            headerMode: 'none',
+            headerLeft: (
+                <HeaderBackButton
+                    onPress={() => {
+                        navigation.navigate('Settings');
+                    }}
+                />
+            ),
+        }),
+    },
+    Account: {
+        screen: accountScreen,
+    },
+});
+
 export default createAppContainer(
   createSwitchNavigator(
     {
@@ -190,6 +220,7 @@ export default createAppContainer(
       Child: childStack,
       Parent: parentNav,
       Auth: AuthStack,
+        ParentSettings: SettingsStack,
     },
     {
       initialRouteName: 'AuthLoading',

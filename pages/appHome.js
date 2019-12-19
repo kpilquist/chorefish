@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class HomeScreen extends Component {
-
   render() {
     return (
       <View style={styles.container}>
@@ -35,33 +35,33 @@ export class HomeScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: '.13rem',
     borderColor: '#8B82FE',
   },
   item: {
     justifyContent: 'center',
   },
   tbutton: {
-    width: '80%',
+    width: '18rem',
   },
   bButton: {
-    paddingTop: 25,
-    width: '80%',
+    paddingTop: '1.3rem',
+    width: '18rem',
   },
   title: {
-    fontSize: 19,
+    fontSize: '1.2rem',
     fontWeight: 'bold',
   },
   activeTitle: {
     color: 'red',
   },
   mainImg: {
-    width: 350,
-    height: 350,
+    width: '21rem',
+    height: '21rem',
   },
 
   touchableButton: {
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
     borderColor: '#292050',
     alignItems: 'center',
     backgroundColor: '#8B82FE',
-    padding: 10,
+    padding: '.6rem',
   },
 
   touchableText: {
-    fontSize: 20,
+    fontSize: '1rem',
     color: '#fff',
   },
 });
