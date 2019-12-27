@@ -4,7 +4,6 @@ import axios from 'axios';
 import '../global';
 
 export class mkChldScreen extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -16,8 +15,12 @@ export class mkChldScreen extends React.Component {
       username: '',
       titleText: '',
       disabled: true,
-      pwordError: true,
-      emailError: true,
+        pwordError: false,
+        unameError: false,
+        fnameError: false,
+        fnameErrorText: '',
+        unameErrorText: '',
+        pwordErrorText: '',
     };
   }
 
@@ -44,19 +47,38 @@ export class mkChldScreen extends React.Component {
     this.setState({disabled: true});
   };
 
+    handelError = data => {
+        if (data.hasOwnProperty('password')) {
+            console.log(data.password);
+            this.setState({pwordError: true, pwordErrorText: data.password});
+        } else {
+            this.setState({pwordError: false, pwordErrorText: ''});
+        }
+        if (data.hasOwnProperty('username')) {
+            console.log(data.username);
+            this.setState({unameError: true, unameErrorText: data.username});
+        } else {
+            this.setState({unameError: false, unameErrorText: ''});
+        }
+        if (data.hasOwnProperty('First_Name')) {
+            console.log(data.username);
+            this.setState({fnameError: true, fnameErrorText: data.First_Name});
+        } else {
+            this.setState({fnameError: false, fnameErrorText: ''});
+        }
+    };
+
   handelSubmit = () => {
     this.setState({disabled: false});
 
-    const {First_Name, Last_Name, password, email, username} = this.state;
+      const {First_Name, password, username} = this.state;
 
     axios
       .post(
         global.url + '/api/auth/mkchld',
         {
           First_Name: First_Name,
-          Last_Name: Last_Name,
           password: password,
-          email: email,
           username: username,
         },
         {
@@ -68,12 +90,11 @@ export class mkChldScreen extends React.Component {
         },
       )
       .then(response => {
-        console.log(response.data);
-        this.setState({titleText: JSON.stringify(response.data.success)});
+          this.enable();
+          this.props.navigation.navigate('ParentHome');
       })
       .catch(error => {
-        console.log(error.data.error);
-        this.setState({titleText: JSON.stringify(error.data.error)});
+          this.handelError(error.response.data);
         this.enable();
       });
   };
@@ -82,10 +103,12 @@ export class mkChldScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.labelText}>First Name</Text>
+          <Text style={styles.error}>{this.state.fnameErrorText}</Text>
         <TextInput
           style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+              {borderColor: this.state.fnameError ? '#ff0023' : '#7a42f4'},
           ]}
           underlineColorAndroid="transparent"
           placeholder="First Name"
@@ -96,10 +119,12 @@ export class mkChldScreen extends React.Component {
         />
         <Text style={styles.labelText}>User Name</Text>
         <Text style={styles.detail}>No Spaces Allowed</Text>
+          <Text style={styles.error}>{this.state.unameErrorText}</Text>
         <TextInput
           style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+              {borderColor: this.state.unameError ? '#ff0023' : '#7a42f4'},
           ]}
           underlineColorAndroid="transparent"
           placeholder="User Name"
@@ -110,10 +135,12 @@ export class mkChldScreen extends React.Component {
         />
         <Text style={styles.labelText}>Password</Text>
         <Text style={styles.detail}>Minimum of 8 characters</Text>
+          <Text style={styles.error}>{this.state.pwordErrorText}</Text>
         <TextInput
           style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+              {borderColor: this.state.pwordError ? '#ff0023' : '#7a42f4'},
           ]}
           underlineColorAndroid="transparent"
           placeholder="Password"
@@ -172,4 +199,8 @@ const styles = StyleSheet.create({
   detail: {
     fontSize: 8,
   },
+    error: {
+        color: '#ff0023',
+        fontSize: 10,
+    },
 });

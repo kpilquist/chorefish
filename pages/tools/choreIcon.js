@@ -6,15 +6,22 @@ export class ChoreIcon extends Component {
   render() {
     let Reward;
     if (parseFloat(this.props.allowance) > 0) {
-      Reward = <Text style={styles.mText}>{this.props.allowance}</Text>;
+        Reward = <Text style={styles.aText}>{'$' + this.props.allowance}</Text>;
     } else {
       Reward = <Text style={styles.mText}>{this.props.screenTime}</Text>;
     }
 
+      let type;
+      if (this.props.act === 2) {
+          type = <Text style={styles.pText}>Ac</Text>;
+      } else {
+          type = <Text style={styles.pText}>Ch</Text>;
+      }
+
     return (
       <View style={styles.container}>
         <View style={styles.top}>
-          <Text style={styles.pText}>Ch</Text>
+            {type}
           <View style={styles.lineStyle} />
           <Text style={styles.text}>{this.props.fname.substring(0, 2)}</Text>
         </View>
@@ -49,6 +56,11 @@ const styles = EStyleSheet.create({
     color: '#ff6900',
     fontSize: '.9rem',
   },
+    aText: {
+        alignSelf: 'center',
+        color: '#ff6900',
+        fontSize: '.7rem',
+    },
   pText: {
     paddingHorizontal: '.1rem',
     color: '#ff6900',

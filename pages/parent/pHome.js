@@ -89,38 +89,38 @@ export class parentHome extends Component {
       });
   };
 
-  render() {
+    render() {
     return (
         <View style={styles.outer}>
-          <View style={styles.header1}>
-            <ChildHeader text={'Chore Fish'}/>
-          </View>
-          <View style={styles.lineStyle}/>
-          <ScrollView persistentScrollbar={true}>
-            <View style={styles.lineStyle}/>
-            <ChildButton children={this.state.childs}/>
-            <View style={styles.lineStyle}/>
-            <View>
-              <View style={styles.header}>
-                <Text style={styles.headerText}>Completed Chores</Text>
-              </View>
-              <View style={styles.lineStyle}/>
-              <ItemView
-                  update={this.updateGroup}
-                  data={this.state.approval}
-                  type={'chore'}
-              />
+            <View style={styles.header1}>
+                <ChildHeader text={'Chore Fish'}/>
             </View>
             <View style={styles.lineStyle}/>
-            <View>
-              <View style={styles.header}>
-                <Text style={styles.headerText}>Assigned Chores</Text>
-              </View>
-              <View style={styles.lineStyle}/>
-              <ItemView update={this.updateGroup} data={this.state.completed}/>
-            </View>
-            <View style={styles.footer}/>
-          </ScrollView>
+            <ScrollView persistentScrollbar={true}>
+                <View style={styles.lineStyle}/>
+                <ChildButton children={this.state.childs}/>
+                <View style={styles.lineStyle}/>
+                <View>
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>Completed Chores</Text>
+                    </View>
+                    <View style={styles.lineStyle}/>
+                    <ItemView
+                        update={this.updateGroup}
+                        data={this.state.approval}
+                        type={'chore'}
+                    />
+                </View>
+                <View style={styles.lineStyle}/>
+                <View>
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>Assigned Chores</Text>
+                    </View>
+                    <View style={styles.lineStyle}/>
+                    <ItemView update={this.updateGroup} data={this.state.completed}/>
+                </View>
+                <View style={styles.footer}/>
+            </ScrollView>
         </View>
     );
   }

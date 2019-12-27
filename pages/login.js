@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './global';
-import {ScrollView, Text, TextInput, TouchableOpacity, View,} from 'react-native';
+import {Linking, ScrollView, Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -9,9 +9,11 @@ export class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: '',
       email: '',
       password: '',
+      emailError: false,
+      passError: false,
+      errorText: '',
     };
   }
 
@@ -23,8 +25,34 @@ export class LoginScreen extends Component {
     this.setState({password: text});
   };
 
+  handelError = data => {
+    if (data.hasOwnProperty('password')) {
+      console.log(data.password);
+      this.setState({passError: true});
+    } else {
+      this.setState({passError: false});
+    }
+    if (data.hasOwnProperty('email')) {
+      console.log(data.username);
+      this.setState({emailError: true});
+    } else {
+      this.setState({emailError: false});
+    }
+
+    if (this.state.passError || this.state.emailError) {
+      this.setState({errorText: 'Login Error: Fields can not be blank.'});
+    }
+
+    if (data.hasOwnProperty('message')) {
+      this.setState({
+        errorText: 'Login failed; check Email or Username and Password',
+        emailError: true,
+        passError: true,
+      });
+    }
+  };
+
   login = (email, password) => {
-    console.log('Login');
     axios
       .post(
         global.url + '/api/auth/login',
@@ -41,13 +69,11 @@ export class LoginScreen extends Component {
           this.saveToken(response.data.access_token).then(
             (global.bearer = response.data.access_token),
           );
-          console.log('Token Recived');
           this.props.navigation.navigate('AuthLoading');
         }
       })
       .catch(error => {
-        console.log('Token NOT Received');
-        console.log(JSON.stringify(error));
+        this.handelError(error.response.data);
         this.props.navigation.navigate('Login');
       });
   };
@@ -67,8 +93,12 @@ export class LoginScreen extends Component {
           <View styles={styles.container}>
             <Text>Login</Text>
           </View>
+          <Text style={styles.error}>{this.state.errorText}</Text>
         <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {borderColor: this.state.emailError ? '#ff0023' : '#7a42f4'},
+            ]}
             underlineColorAndroid={'transparent'}
             placeholder={'Email or User Name'}
             placeholderTextColor={'#9a73ef'}
@@ -77,7 +107,10 @@ export class LoginScreen extends Component {
         />
 
         <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {borderColor: this.state.passError ? '#ff0023' : '#7a42f4'},
+            ]}
             secureTextEntry={true}
             underlineColorAndroid={'transparent'}
             placeholder={'Password'}
@@ -85,13 +118,21 @@ export class LoginScreen extends Component {
             autoCapitalize={'none'}
             onChangeText={this.handlePassword}
         />
-        <View style={styles.container} />
-
+          <View style={[styles.container, styles.reset]}/>
         <TouchableOpacity
           style={styles.submitButton}
           onPress={() => this.login(this.state.email, this.state.password)}>
           <Text style={styles.submitButtonText}> Submit </Text>
         </TouchableOpacity>
+
+          <TouchableOpacity
+              style={styles.submitButton}
+              title="Reset Password"
+              onPress={() => {
+                Linking.openURL('https://chorefish.com/password/reset');
+              }}>
+            <Text style={styles.submitButtonText}> Reset Password </Text>
+          </TouchableOpacity>
 
         <Text>{this.state.titleText}</Text>
       </ScrollView>
@@ -122,4 +163,9 @@ const styles = EStyleSheet.create({
   submitButtonText: {
     color: 'white',
   },
+  error: {
+    color: '#ff0023',
+    fontSize: 10,
+  },
+  reset: {},
 });

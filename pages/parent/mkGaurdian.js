@@ -12,8 +12,12 @@ export class mkGaurdScreen extends React.Component {
       email: '',
       password: '',
       disabled: true,
-      pwordError: true,
-      emailError: true,
+        pwordError: false,
+        emailError: false,
+        nameError: false,
+        pwordErrorText: '',
+        emailErrorText: '',
+        nameErrorText: '',
     };
   }
 
@@ -33,9 +37,29 @@ export class mkGaurdScreen extends React.Component {
     this.setState({disabled: true});
   };
 
+    handelError = data => {
+        if (data.hasOwnProperty('password')) {
+            console.log(data.password);
+            this.setState({pwordError: true, pwordErrorText: data.password});
+        } else {
+            this.setState({pwordError: false, pwordErrorText: ''});
+        }
+        if (data.hasOwnProperty('email')) {
+            console.log(data.username);
+            this.setState({emailError: true, emailErrorText: data.email});
+        } else {
+            this.setState({emailError: false, emailErrorText: ''});
+        }
+        if (data.hasOwnProperty('name')) {
+            console.log(data.username);
+            this.setState({nameError: true, nameErrorText: data.name});
+        } else {
+            this.setState({nameError: false, nameErrorText: ''});
+        }
+    };
+
   handelSubmit = () => {
     this.setState({disabled: false});
-
     const {name, password, email} = this.state;
 
     axios
@@ -55,10 +79,11 @@ export class mkGaurdScreen extends React.Component {
         },
       )
       .then(response => {
-        console.log(response.data);
+          this.enable();
+          this.props.navigation.navigate('ParentHome');
       })
       .catch(error => {
-        console.log(error);
+          this.handelError(error.response.data);
         this.enable();
       });
   };
@@ -66,10 +91,12 @@ export class mkGaurdScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.labelText}>Display Name</Text>
+          <Text style={styles.error}>{this.state.nameErrorText}</Text>
         <TextInput
           style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+              {borderColor: this.state.nameError ? '#ff0023' : '#7a42f4'},
           ]}
           underlineColorAndroid="transparent"
           placeholder="Display Name"
@@ -78,32 +105,36 @@ export class mkGaurdScreen extends React.Component {
           onChangeText={this.handelName}
           editable={this.state.disabled}
         />
-        <Text style={styles.labelText}>Email</Text>
+          <Text style={styles.labelText}>Guardian's Email</Text>
+          <Text style={styles.error}>{this.state.emailErrorText}</Text>
         <TextInput
-          style={[
+            style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+                {borderColor: this.state.emailError ? '#ff0023' : '#7a42f4'},
           ]}
-          underlineColorAndroid="transparent"
-          placeholder="Email"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handleEmail}
-          editable={this.state.disabled}
+            underlineColorAndroid="transparent"
+            placeholder="New Guardian Email"
+            placeholderTextColor="#C0C0C0"
+            autoCapitalize="none"
+            onChangeText={this.handleEmail}
+            editable={this.state.disabled}
         />
-        <Text style={styles.labelText}>Password</Text>
+          <Text style={styles.labelText}>Guardian's Password</Text>
         <Text style={styles.detail}>Minimum of 8 characters</Text>
+          <Text style={styles.error}>{this.state.pwordErrorText}</Text>
         <TextInput
-          style={[
+            style={[
             styles.input,
             {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
+                {borderColor: this.state.pwordError ? '#ff0023' : '#7a42f4'},
           ]}
-          underlineColorAndroid="transparent"
-          placeholder="Password"
-          placeholderTextColor="#C0C0C0"
-          autoCapitalize="none"
-          onChangeText={this.handlePassword}
-          editable={this.state.disabled}
+            underlineColorAndroid="transparent"
+            placeholder="Password for new Guardian"
+            placeholderTextColor="#C0C0C0"
+            autoCapitalize="none"
+            onChangeText={this.handlePassword}
+            editable={this.state.disabled}
         />
         <TouchableOpacity
           style={[
@@ -153,4 +184,8 @@ const styles = StyleSheet.create({
   detail: {
     fontSize: 8,
   },
+    error: {
+        color: '#ff0023',
+        fontSize: 10,
+    },
 });

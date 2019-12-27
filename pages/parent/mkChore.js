@@ -29,6 +29,16 @@ export class mkChoreScreen extends React.Component {
       childrenString: '',
       children: [],
       buttons: [],
+      nameErr: false,
+      hrErr: false,
+      minErr: false,
+      allErr: false,
+      csErr: false,
+      csErrTxt: '',
+      nameErrTxt: '',
+      hrErrTxt: '',
+      minErrTxt: '',
+      allErrTxt: '',
     };
   }
 
@@ -71,6 +81,38 @@ export class mkChoreScreen extends React.Component {
     this.setState({disabled: true});
   };
 
+  handelError = data => {
+    if (data.hasOwnProperty('childrenString')) {
+      this.setState({csErr: true, csErrTxt: data.name});
+    } else {
+      this.setState({csErr: false, csErrTxt: ''});
+    }
+    if (data.hasOwnProperty('name')) {
+      this.setState({nameErr: true, nameErrTxt: data.name});
+    } else {
+      this.setState({nameErr: false, nameErrTxt: ''});
+    }
+    if (data.hasOwnProperty('hr')) {
+      this.setState({hrErr: true, hrErrTxt: data.hr});
+    } else {
+      this.setState({hrErr: false, hrErrTxt: ''});
+    }
+    if (data.hasOwnProperty('min')) {
+      this.setState({minErr: true, minErrTxt: data.min});
+    } else {
+      this.setState({minErr: false, minErrTxt: ''});
+    }
+    if (data.hasOwnProperty('allowance')) {
+      console.log(data.username);
+      this.setState({allErr: true, allErrTxt: data.allowance});
+    } else {
+      this.setState({allErr: false, allErrTxt: ''});
+    }
+  };
+  goToTop = () => {
+    this.scroll.scrollTo({x: 0, y: 0, animated: true});
+  };
+
   handelSubmit = () => {
     this.setState({disabled: false});
 
@@ -111,8 +153,10 @@ export class mkChoreScreen extends React.Component {
         this.props.navigation.navigate('ParentHome');
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.response.data);
+        this.handelError(error.response.data);
         this.setState({titleText: JSON.stringify(error)});
+        this.goToTop();
         this.enable();
       });
   };
@@ -124,9 +168,18 @@ export class mkChoreScreen extends React.Component {
             <ChildHeader text={'New Chore'}/>
           </View>
           <View style={styles.lineStyle}/>
-          <ScrollView persistentScrollbar={true}>
+          <ScrollView
+              persistentScrollbar={true}
+              ref={c => {
+                this.scroll = c;
+              }}>
             <View style={styles.container}>
               <ChildrenList updateParentState={this.updateState.bind(this)}/>
+              {this.state.csErr && (
+                  <Text style={styles.error}>
+                    At least one child must be selected.
+                  </Text>
+              )}
               <Text style={styles.topLabelText}>Type:</Text>
               <SwitchSelector
                   options={typeOptions}
@@ -141,6 +194,7 @@ export class mkChoreScreen extends React.Component {
               />
 
               <Text style={styles.labelText}>Name</Text>
+              <Text style={styles.error}>{this.state.nameErrTxt}</Text>
               <TextInput
                   style={[
                     styles.input,
@@ -175,6 +229,7 @@ export class mkChoreScreen extends React.Component {
                 {!this.state.showHr && (
                     <Text style={styles.labelText}>Allowance:</Text>
                 )}
+                <Text style={styles.error}>{this.state.allErrTxt}</Text>
 
                 {!this.state.showHr && (
                     <TextInput
@@ -196,6 +251,11 @@ export class mkChoreScreen extends React.Component {
               </View>
 
               <View style={styles.timeContainer}>
+                {this.state.showHr && (
+                    <Text style={styles.error}>
+                      {this.state.hrErrTxt + ' ' + this.state.minErrTxt}
+                    </Text>
+                )}
                 <View style={styles.labelContainer}>
                   {this.state.showHr && (
                       <Text style={styles.labelText}>Hours</Text>
@@ -395,5 +455,9 @@ const styles = EStyleSheet.create({
   lineStyle: {
     borderWidth: 1,
     borderColor: '#000285',
+  },
+  error: {
+    color: '#ff0023',
+    fontSize: 10,
   },
 });

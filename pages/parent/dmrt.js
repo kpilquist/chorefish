@@ -21,6 +21,8 @@ export class demeritScreen extends React.Component {
       selectedChildren: {},
       childrenString: '',
       dataSource: [],
+      csErr: false,
+      csTxt: '',
     };
   }
   componentDidUpdate(prevProps) {
@@ -31,6 +33,17 @@ export class demeritScreen extends React.Component {
   updateState(data) {
     this.setState({childrenString: data});
   }
+
+  handelError = data => {
+    if (data.hasOwnProperty('childrenString')) {
+      this.setState({
+        csErr: true,
+        csTxt: 'At least one child must be selected',
+      });
+    } else {
+      this.setState({csErr: false, csTxt: ''});
+    }
+  };
 
   handelSubmit = () => {
     this.setState({disabled: false});
@@ -65,7 +78,11 @@ export class demeritScreen extends React.Component {
         this.props.navigation.navigate('ParentHome');
       })
       .catch(error => {
-        console.log(error.data);
+        this.handelError(error.response.data);
+        console.log(error.response.data);
+        this.setState({
+          disabled: true,
+        });
       });
   };
 
@@ -79,6 +96,7 @@ export class demeritScreen extends React.Component {
         <ScrollView showsVerticalScrollIndicator={true}>
           <View style={styles.container}>
             <ChildrenList updateParentState={this.updateState.bind(this)} />
+            <Text style={styles.error}>{this.state.csTxt}</Text>
             <Text style={styles.labelText}>Type:</Text>
             <SwitchSelector
               options={Options}
@@ -271,5 +289,9 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+  },
+  error: {
+    color: '#ff0023',
+    fontSize: 10,
   },
 });
