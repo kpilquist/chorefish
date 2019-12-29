@@ -6,7 +6,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 export class ChildButton extends Component {
   onSelect = id => {
-    console.log('Press: ' + id);
+    this.props.func(id);
   };
 
   childItem = item => (

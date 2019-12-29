@@ -239,6 +239,7 @@ export class mkChoreScreen extends React.Component {
                         ]}
                         underlineColorAndroid="transparent"
                         placeholder="Amount"
+                        keyboardType="numeric"
                         placeholderTextColor="#C0C0C0"
                         autoCapitalize="none"
                         onChangeText={this.handleAllowance}
@@ -273,6 +274,7 @@ export class mkChoreScreen extends React.Component {
                           ]}
                           underlineColorAndroid="transparent"
                           placeholder="Hours"
+                          keyboardType="numeric"
                           placeholderTextColor="#C0C0C0"
                           autoCapitalize="none"
                           onChangeText={this.handelHr}
@@ -300,6 +302,7 @@ export class mkChoreScreen extends React.Component {
                           ]}
                           underlineColorAndroid="transparent"
                           placeholder="Minutes"
+                          keyboardType="numeric"
                           placeholderTextColor="#C0C0C0"
                           autoCapitalize="none"
                           onChangeText={this.handleMin}

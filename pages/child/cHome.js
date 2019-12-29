@@ -28,8 +28,8 @@ export class childHome extends Component {
     let date = new Date(null);
     date.setSeconds(time); // specify value for SECONDS here
     let result = date.toISOString().substr(11, 5);
-
-    this.setState({screen: result, negative: negative});
+    //TODO fix child screen negative value
+    this.setState({screen: result, negative: false});
 
     return result;
   };

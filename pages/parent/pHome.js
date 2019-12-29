@@ -13,7 +13,6 @@ export class parentHome extends Component {
     super(props);
 
     this.state = {
-      titleText: '-=-=-=-=-:',
       familyJson: [],
       approvalCollapsed: true,
       choresCollapsed: true,
@@ -27,6 +26,12 @@ export class parentHome extends Component {
       timer: false,
     };
   }
+
+  childScreen = id => {
+    this.props.navigation.navigate('parentChild', {
+      uuid: id,
+    });
+  };
 
   componentDidMount() {
     const {navigation} = this.props;
@@ -89,38 +94,38 @@ export class parentHome extends Component {
       });
   };
 
-    render() {
+  render() {
     return (
         <View style={styles.outer}>
-            <View style={styles.header1}>
-                <ChildHeader text={'Chore Fish'}/>
+          <View style={styles.header1}>
+            <ChildHeader text={'Chore Fish'}/>
+          </View>
+          <View style={styles.lineStyle}/>
+          <ScrollView persistentScrollbar={true}>
+            <View style={styles.lineStyle}/>
+            <ChildButton children={this.state.childs} func={this.childScreen}/>
+            <View style={styles.lineStyle}/>
+            <View>
+              <View style={styles.header}>
+                <Text style={styles.headerText}>Completed Chores</Text>
+              </View>
+              <View style={styles.lineStyle}/>
+              <ItemView
+                  update={this.updateGroup}
+                  data={this.state.approval}
+                  type={'chore'}
+              />
             </View>
             <View style={styles.lineStyle}/>
-            <ScrollView persistentScrollbar={true}>
-                <View style={styles.lineStyle}/>
-                <ChildButton children={this.state.childs}/>
-                <View style={styles.lineStyle}/>
-                <View>
-                    <View style={styles.header}>
-                        <Text style={styles.headerText}>Completed Chores</Text>
-                    </View>
-                    <View style={styles.lineStyle}/>
-                    <ItemView
-                        update={this.updateGroup}
-                        data={this.state.approval}
-                        type={'chore'}
-                    />
-                </View>
-                <View style={styles.lineStyle}/>
-                <View>
-                    <View style={styles.header}>
-                        <Text style={styles.headerText}>Assigned Chores</Text>
-                    </View>
-                    <View style={styles.lineStyle}/>
-                    <ItemView update={this.updateGroup} data={this.state.completed}/>
-                </View>
-                <View style={styles.footer}/>
-            </ScrollView>
+            <View>
+              <View style={styles.header}>
+                <Text style={styles.headerText}>Assigned Chores</Text>
+              </View>
+              <View style={styles.lineStyle}/>
+              <ItemView update={this.updateGroup} data={this.state.completed}/>
+            </View>
+            <View style={styles.footer}/>
+          </ScrollView>
         </View>
     );
   }

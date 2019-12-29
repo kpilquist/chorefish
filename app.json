@@ -1,7 +1,7 @@
 {
   "name": "ChoreFishReact",
-  "displayName": "ChoreFishReact",
+  "displayName": "Chore Fish",
   "android": {
-    "versionCode": 3
+    "versionCode": 6
   }
 }

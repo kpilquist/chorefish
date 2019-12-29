@@ -117,16 +117,17 @@ export class demeritScreen extends React.Component {
 
               {!this.state.reward && (
                 <TextInput
-                  style={[
+                    style={[
                     styles.moneyInput,
                     {backgroundColor: this.state.disabled ? '#FFF' : '#C0C0C0'},
                   ]}
-                  underlineColorAndroid="transparent"
-                  placeholder="Amount"
-                  placeholderTextColor="#C0C0C0"
-                  autoCapitalize="none"
-                  onChangeText={value => this.setState({allowance: value})}
-                  editable={this.state.disabled}
+                    underlineColorAndroid="transparent"
+                    placeholder="Amount"
+                    keyboardType="numeric"
+                    placeholderTextColor="#C0C0C0"
+                    autoCapitalize="none"
+                    onChangeText={value => this.setState({allowance: value})}
+                    editable={this.state.disabled}
                 />
               )}
             </View>
@@ -139,7 +140,7 @@ export class demeritScreen extends React.Component {
 
                 {this.state.reward && (
                   <TextInput
-                    style={[
+                      style={[
                       styles.timeInput,
                       {
                         backgroundColor: this.state.disabled
@@ -147,12 +148,13 @@ export class demeritScreen extends React.Component {
                           : '#C0C0C0',
                       },
                     ]}
-                    underlineColorAndroid="transparent"
-                    placeholder="Hours"
-                    placeholderTextColor="#C0C0C0"
-                    autoCapitalize="none"
-                    onChangeText={value => this.setState({hour: value})}
-                    editable={this.state.disabled}
+                      keyboardType="numeric"
+                      underlineColorAndroid="transparent"
+                      placeholder="Hours"
+                      placeholderTextColor="#C0C0C0"
+                      autoCapitalize="none"
+                      onChangeText={value => this.setState({hours: value})}
+                      editable={this.state.disabled}
                   />
                 )}
               </View>
@@ -163,7 +165,7 @@ export class demeritScreen extends React.Component {
                 )}
                 {this.state.reward && (
                   <TextInput
-                    style={[
+                      style={[
                       styles.timeInput,
                       {
                         backgroundColor: this.state.disabled
@@ -171,12 +173,13 @@ export class demeritScreen extends React.Component {
                           : '#C0C0C0',
                       },
                     ]}
-                    underlineColorAndroid="transparent"
-                    placeholder="Minutes"
-                    placeholderTextColor="#C0C0C0"
-                    autoCapitalize="none"
-                    onChangeText={value => this.setState({min: value})}
-                    editable={this.state.disabled}
+                      keyboardType="numeric"
+                      underlineColorAndroid="transparent"
+                      placeholder="Minutes"
+                      placeholderTextColor="#C0C0C0"
+                      autoCapitalize="none"
+                      onChangeText={value => this.setState({min: value})}
+                      editable={this.state.disabled}
                   />
                 )}
               </View>

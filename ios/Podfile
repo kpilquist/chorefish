@@ -40,20 +40,10 @@ target 'ChoreFishReact' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  target 'ChoreFishReactTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+
 
   use_native_modules!
 end
 
-target 'ChoreFishReact-tvOS' do
-  # Pods for ChoreFishReact-tvOS
 
-  target 'ChoreFishReact-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
-end

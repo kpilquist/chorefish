@@ -22,6 +22,7 @@ import {mkGaurdScreen} from './pages/parent/mkGaurdian';
 import {demeritScreen} from './pages/parent/dmrt';
 import {newChoreView} from './pages/child/newChore';
 import {piggyBankView} from './pages/child/piggyBank';
+import chldAct from './pages/parent/chldAct';
 import settingsView from './pages/parent/settings';
 import newActivityView from './pages/child/childActivity';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -209,6 +210,21 @@ const SettingsStack = createStackNavigator({
     },
     Account: {
         screen: accountScreen,
+    },
+    parentChild: {
+        screen: chldAct,
+        navigationOptions: ({navigation}) => ({
+            //don't forget parentheses around the object notation
+            title: 'Child Details',
+            headerMode: 'none',
+            headerLeft: (
+                <HeaderBackButton
+                    onPress={() => {
+                        navigation.navigate('ParentHome');
+                    }}
+                />
+            ),
+        }),
     },
 });
 
