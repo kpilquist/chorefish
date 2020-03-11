@@ -12,6 +12,7 @@
     "test": "jest",
     "lint": "eslint .",
     "IOS Release": "react-native run-ios --configuration Release"
+    
   },
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
