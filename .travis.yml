@@ -1,0 +1,16 @@
+branches:
+  only:
+    - master
+    - /^release\/.+$/
+
+install: npm i 
+os: linux
+
+language: node_js
+node_js: "12"
+dist: bionic
+
+cache:
+  npm: true
+  directories:
+    - node_modules
