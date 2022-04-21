@@ -25,7 +25,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
     "@react-native-community/masked-view": "^0.1.5",
-    "axios": "^0.19.0",
+    "axios": "^0.21.2",
     "eslint-plugin-react-native": "3.6.0",
     "react": "16.9.0",
     "react-native": "0.61.5",
